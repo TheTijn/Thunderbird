@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="200" viewBox="0 0 240 200">
+  <!-- crash-state signature: skeleton bird, same silhouette as the live bird -->
+  <!-- tail + body silhouette -->
+  <g fill="#10150a" stroke="rgba(198,243,29,.6)" stroke-width="3" stroke-linejoin="round">
+    <g transform="translate(70 106) rotate(184)"><ellipse cx="26" cy="0" rx="26" ry="8"/></g>
+    <ellipse cx="132" cy="108" rx="63" ry="61"/>
+  </g>
+
+  <!-- wing bones: bare fingers where the feather fan was -->
+  <g fill="none" stroke="#f2eed6" stroke-width="5" stroke-linecap="round">
+    <g transform="translate(98 66) rotate(-78)"><path d="M2 0 L 50 0"/></g>
+    <g transform="translate(98 66) rotate(-112)"><path d="M2 0 L 56 0"/></g>
+    <g transform="translate(98 66) rotate(-146)"><path d="M2 0 L 54 0"/></g>
+  </g>
+  <g fill="#f2eed6">
+    <circle cx="108.4" cy="17.1" r="4.5"/>
+    <circle cx="77" cy="14.1" r="4.5"/>
+    <circle cx="53.2" cy="35.8" r="4.5"/>
+  </g>
+
+  <!-- skull with eye socket -->
+  <circle cx="166" cy="82" r="21" fill="#f2eed6"/>
+  <circle cx="174" cy="77" r="7" fill="#10150a"/>
+  <!-- open beak (screaming) -->
+  <path d="M188 86 L 226 78 L 194 102 Z" fill="#f2eed6"/>
+  <path d="M198 108 L 219 104 L 200 116 Z" fill="#f2eed6"/>
+
+  <!-- spine + ribs -->
+  <path d="M148 106 C 128 118 108 124 88 126" fill="none" stroke="#f2eed6" stroke-width="6" stroke-linecap="round"/>
+  <g fill="none" stroke="#f2eed6" stroke-width="5" stroke-linecap="round">
+    <path d="M140 112 C 138 128 128 138 114 142"/>
+    <path d="M126 119 C 124 132 115 140 104 144"/>
+    <path d="M111 125 C 109 135 102 141 93 144"/>
+    <path d="M97 128 C 95 136 90 141 83 143"/>
+  </g>
+
+  <!-- leg bones -->
+  <g stroke="#f2eed6" stroke-width="5" stroke-linecap="round">
+    <path d="M126 160 L 132 178"/>
+    <path d="M148 162 L 152 180"/>
+  </g>
+  <circle cx="133" cy="181" r="4" fill="#f2eed6"/>
+  <circle cx="153" cy="183" r="4" fill="#f2eed6"/>
+</svg>

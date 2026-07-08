@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 250">
+  <!-- Thunderbird circular badge: bird + lightning bolt + banner -->
+  <defs>
+    <clipPath id="badge-clip"><circle cx="120" cy="112" r="104"/></clipPath>
+    <clipPath id="badge-bird-clip"><ellipse cx="132" cy="108" rx="63" ry="61"/></clipPath>
+  </defs>
+  <!-- badge disc -->
+  <circle cx="120" cy="112" r="108" fill="#9bc716"/>
+  <circle cx="120" cy="112" r="100" fill="#151d10"/>
+  <!-- subtle rays -->
+  <g clip-path="url(#badge-clip)" fill="#1e2a15">
+    <path d="M120 112 L60 -20 L100 -20 Z"/>
+    <path d="M120 112 L160 -20 L200 -20 Z"/>
+    <path d="M120 112 L-40 60 L-40 100 Z"/>
+    <path d="M120 112 L280 60 L280 100 Z"/>
+    <path d="M120 112 L-20 220 L20 244 Z"/>
+    <path d="M120 112 L220 244 L260 220 Z"/>
+  </g>
+  <!-- lightning bolt -->
+  <path d="M144 18 L178 18 L154 90 L184 90 L118 206 L136 122 L108 122 Z"
+        fill="#d8f542" stroke="#8fb812" stroke-width="5" stroke-linejoin="round"/>
+  <!-- bird (front of bolt) -->
+  <g transform="translate(10 42) scale(0.60)">
+    <g fill="#3e7016" stroke="#223607" stroke-width="3" stroke-linejoin="round">
+      <g transform="translate(78 100) rotate(190)"><ellipse cx="26" cy="0" rx="30" ry="8"/></g>
+      <g transform="translate(78 112) rotate(172)"><ellipse cx="24" cy="0" rx="28" ry="7.5"/></g>
+    </g>
+    <g transform="translate(98 122) rotate(148)">
+      <ellipse cx="30" cy="0" rx="33" ry="11" fill="#3e7016" stroke="#223607" stroke-width="3"/>
+    </g>
+    <ellipse cx="132" cy="108" rx="63" ry="61" fill="#7cc42d" stroke="#223607" stroke-width="3.5"/>
+    <g clip-path="url(#badge-bird-clip)">
+      <ellipse cx="118" cy="54" rx="44" ry="18" fill="#9fdb4a" opacity=".65"/>
+      <g fill="#5ca51f" opacity=".9">
+        <ellipse cx="98" cy="66" rx="10" ry="6" transform="rotate(-18 98 66)"/>
+        <ellipse cx="128" cy="52" rx="12" ry="7"/>
+        <ellipse cx="157" cy="60" rx="9" ry="5.5" transform="rotate(14 157 60)"/>
+      </g>
+      <ellipse cx="152" cy="148" rx="66" ry="52" fill="#f2d93b"/>
+      <ellipse cx="152" cy="164" rx="60" ry="34" fill="#e9c52e" opacity=".55"/>
+    </g>
+    <ellipse cx="132" cy="108" rx="63" ry="61" fill="none" stroke="#223607" stroke-width="3.5"/>
+    <path d="M194 103 L 227 91 L 198 114 Z" fill="#53350b"/>
+    <path d="M187 82 L 235 77 L 194 104 Z" fill="#f7a821" stroke="#223607" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M198 114 L 223 107 L 200 124 Z" fill="#de8a10" stroke="#223607" stroke-width="3" stroke-linejoin="round"/>
+    <circle cx="172" cy="82" r="17" fill="#f4f9e4"/>
+    <circle cx="173" cy="83" r="13.5" fill="#131a09"/>
+    <circle cx="178" cy="77" r="4.8" fill="#ffffff"/>
+    <g stroke="#223607" stroke-width="3" stroke-linejoin="round">
+      <g transform="translate(106 76) rotate(-92)">
+        <ellipse cx="40" cy="0" rx="42" ry="10" fill="#8fd435"/>
+        <ellipse cx="66" cy="0" rx="17" ry="8.5" fill="#3f7d15" stroke="none"/>
+      </g>
+      <g transform="translate(106 76) rotate(-116)">
+        <ellipse cx="44" cy="0" rx="46" ry="11" fill="#8fd435"/>
+        <ellipse cx="72" cy="0" rx="18" ry="9" fill="#3f7d15" stroke="none"/>
+      </g>
+      <g transform="translate(106 76) rotate(-140)">
+        <ellipse cx="42" cy="0" rx="44" ry="11" fill="#8fd435"/>
+        <ellipse cx="69" cy="0" rx="17" ry="9" fill="#3f7d15" stroke="none"/>
+      </g>
+      <g transform="translate(106 76) rotate(-164)">
+        <ellipse cx="36" cy="0" rx="38" ry="10.5" fill="#8fd435"/>
+        <ellipse cx="58" cy="0" rx="16" ry="8.5" fill="#3f7d15" stroke="none"/>
+      </g>
+      <g transform="translate(106 76) rotate(-140)">
+        <ellipse cx="15" cy="0" rx="21" ry="12" fill="#6db92b"/>
+      </g>
+    </g>
+    <g stroke="#ef9c16" stroke-width="7" stroke-linecap="round" fill="none">
+      <path d="M118 162 C 118 174 127 179 136 176"/>
+      <path d="M144 164 C 145 176 154 180 161 177"/>
+    </g>
+  </g>
+  <!-- banner -->
+  <g>
+    <path d="M14 168 L226 168 L214 210 L26 210 Z" fill="#0e1409" stroke="#9bc716" stroke-width="5" stroke-linejoin="round"/>
+    <text x="120" y="197" text-anchor="middle" fill="#ffffff"
+          font-family="Inter, 'Arial Black', Arial, sans-serif" font-size="25" font-weight="900" letter-spacing="1.5">THUNDERBIRD</text>
+  </g>
+  <!-- small bolt emblem under banner -->
+  <path d="M120 214 L130 214 L122 232 L132 232 L112 250 L118 236 L110 236 Z" fill="#d8f542"/>
+</svg>

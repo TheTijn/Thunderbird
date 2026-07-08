@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="200" viewBox="0 0 240 200">
+  <!-- Thunderbird — chubby round body, yellow belly, layered feather fan wing,
+       big glossy eye, open amber beak. Flat tones + dark outline per reference. -->
+  <defs>
+    <clipPath id="tb-body-clip"><ellipse cx="132" cy="108" rx="63" ry="61"/></clipPath>
+  </defs>
+
+  <!-- tail feathers (behind body) -->
+  <g fill="#3e7016" stroke="#223607" stroke-width="3" stroke-linejoin="round">
+    <g transform="translate(78 100) rotate(190)"><ellipse cx="26" cy="0" rx="30" ry="8"/></g>
+    <g transform="translate(78 112) rotate(172)"><ellipse cx="24" cy="0" rx="28" ry="7.5"/></g>
+  </g>
+
+  <!-- far wing (behind body, pointing down-left) -->
+  <g transform="translate(98 122) rotate(148)">
+    <ellipse cx="30" cy="0" rx="33" ry="11" fill="#3e7016" stroke="#223607" stroke-width="3"/>
+  </g>
+
+  <!-- body -->
+  <ellipse cx="132" cy="108" rx="63" ry="61" fill="#7cc42d" stroke="#223607" stroke-width="3.5"/>
+
+  <!-- head highlight + camo spots + belly (clipped to body) -->
+  <g clip-path="url(#tb-body-clip)">
+    <ellipse cx="118" cy="54" rx="44" ry="18" fill="#9fdb4a" opacity=".65"/>
+    <g fill="#5ca51f" opacity=".9">
+      <ellipse cx="98" cy="66" rx="10" ry="6" transform="rotate(-18 98 66)"/>
+      <ellipse cx="128" cy="52" rx="12" ry="7"/>
+      <ellipse cx="157" cy="60" rx="9" ry="5.5" transform="rotate(14 157 60)"/>
+      <ellipse cx="88" cy="88" rx="8" ry="5" transform="rotate(-30 88 88)"/>
+    </g>
+    <ellipse cx="152" cy="148" rx="66" ry="52" fill="#f2d93b"/>
+    <ellipse cx="152" cy="164" rx="60" ry="34" fill="#e9c52e" opacity=".55"/>
+  </g>
+  <!-- re-stroke body rim over clipped fills -->
+  <ellipse cx="132" cy="108" rx="63" ry="61" fill="none" stroke="#223607" stroke-width="3.5"/>
+
+  <!-- beak (open, cheerful): upper tilted up, dark gape, small lower -->
+  <path d="M194 103 L 227 91 L 198 114 Z" fill="#53350b"/>
+  <path d="M187 82 L 235 77 L 194 104 Z"
+        fill="#f7a821" stroke="#223607" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M198 114 L 223 107 L 200 124 Z"
+        fill="#de8a10" stroke="#223607" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- eye: cream ring, dark iris, glints -->
+  <circle cx="172" cy="82" r="17" fill="#f4f9e4"/>
+  <circle cx="173" cy="83" r="13.5" fill="#131a09"/>
+  <circle cx="178" cy="77" r="4.8" fill="#ffffff"/>
+  <circle cx="168" cy="88" r="2" fill="#ffffff" opacity=".8"/>
+
+  <!-- main wing: fan of primaries sweeping up-left from the shoulder -->
+  <g stroke="#223607" stroke-width="3" stroke-linejoin="round">
+    <g transform="translate(106 76) rotate(-92)">
+      <ellipse cx="36" cy="0" rx="38" ry="10" fill="#8fd435"/>
+      <ellipse cx="59" cy="0" rx="15" ry="8.5" fill="#3f7d15" stroke="none"/>
+    </g>
+    <g transform="translate(106 76) rotate(-116)">
+      <ellipse cx="40" cy="0" rx="42" ry="11" fill="#8fd435"/>
+      <ellipse cx="66" cy="0" rx="16" ry="9" fill="#3f7d15" stroke="none"/>
+    </g>
+    <g transform="translate(106 76) rotate(-140)">
+      <ellipse cx="42" cy="0" rx="44" ry="11" fill="#8fd435"/>
+      <ellipse cx="69" cy="0" rx="17" ry="9" fill="#3f7d15" stroke="none"/>
+    </g>
+    <g transform="translate(106 76) rotate(-164)">
+      <ellipse cx="36" cy="0" rx="38" ry="10.5" fill="#8fd435"/>
+      <ellipse cx="58" cy="0" rx="16" ry="8.5" fill="#3f7d15" stroke="none"/>
+    </g>
+    <g transform="translate(106 76) rotate(-186)">
+      <ellipse cx="28" cy="0" rx="30" ry="9.5" fill="#8fd435"/>
+      <ellipse cx="45" cy="0" rx="13" ry="8" fill="#3f7d15" stroke="none"/>
+    </g>
+    <!-- covert layer over the fan base -->
+    <g transform="translate(106 76) rotate(-140)">
+      <ellipse cx="15" cy="0" rx="21" ry="12" fill="#6db92b"/>
+    </g>
+  </g>
+
+  <!-- feet: little curled orange toes under the belly -->
+  <g stroke="#ef9c16" stroke-width="7" stroke-linecap="round" fill="none">
+    <path d="M118 162 C 118 174 127 179 136 176"/>
+    <path d="M144 164 C 145 176 154 180 161 177"/>
+  </g>
+  <circle cx="137" cy="176" r="3.6" fill="#ef9c16"/>
+  <circle cx="162" cy="177" r="3.6" fill="#ef9c16"/>
+</svg>

@@ -1,0 +1,108 @@
+/* ==========================================================================
+   THUNDERBIRD theme
+   All colors/gradients for the crash game shell. This file plays the role of
+   the production per-game theme stylesheet (swapped via <link id="game-theme">).
+
+   Palette: built from the Thunderbird neon yellow-green (#c6f31d) on a dark
+   forest-charcoal base, with complementary accents — deep teal (cool
+   counterpoint) and beak amber (warm) — instead of the legacy Rodeo purple.
+   ========================================================================== */
+
+:root {
+  /* ---- Core palette ---- */
+  --tb-primary: #c6f31d;                 /* neon yellow-green */
+  --tb-primary-strong: #dfff5e;
+  --tb-primary-dim: rgba(198, 243, 29, .38);
+  --tb-on-primary: #142000;
+  --tb-green-deep: #7fb800;
+  --tb-teal: #2ec4b6;                    /* cool complementary accent */
+  --tb-amber: #f0a626;                   /* warm accent (beak orange) */
+
+  --tb-red: #9e1f1f;                     /* result state */
+  --tb-red-deep: #6f1212;
+  --tb-red-text: #ff7d6e;
+
+  --tb-text: #ffffff;
+  --tb-text-dim: rgba(228, 240, 209, .55);   /* soft-green tinted secondary text */
+
+  /* ---- Page & panels: deep black-green arena with neon glow pools ---- */
+  --tb-page-grad:
+    radial-gradient(1000px 460px at 50% -140px, rgba(198, 243, 29, .17), transparent 62%),
+    radial-gradient(1400px 720px at 50% 118%, rgba(16, 168, 118, .20), transparent 58%),
+    linear-gradient(180deg, #030503 0%, #081108 46%, #0b1e10 100%);
+  --tb-panel-bg: linear-gradient(180deg, rgba(52, 82, 26, .40) 0%, rgba(9, 15, 6, .88) 26%, rgba(7, 12, 5, .90) 100%);
+  --tb-panel-border: rgba(198, 243, 29, .17);
+  --tb-panel-shadow: 0 12px 32px rgba(0, 0, 0, .5), inset 0 1px 0 rgba(198, 243, 29, .12);
+  --tb-popover-bg: #10190a;
+  --tb-row-bg: rgba(198, 243, 29, .05);
+  --tb-row-win-bg: rgba(198, 243, 29, .13);
+  --tb-scrollbar: rgba(198, 243, 29, .4);
+  --tb-input-bg: rgba(2, 4, 1, .72);
+
+  /* ---- Header ---- */
+  --tb-icon-btn-bg: rgba(198, 243, 29, .14);
+  --tb-icon-btn-bg-hover: rgba(198, 243, 29, .30);
+  --tb-help-bg: rgba(198, 243, 29, .26);
+  --tb-balance: var(--tb-primary);
+  --tb-avatar-bg: #16240f;
+  --tb-avatar-ring: rgba(198, 243, 29, .65);
+  --tb-history-bg: rgba(2, 4, 1, .66);
+  --tb-history-btn-bg: rgba(198, 243, 29, .12);
+
+  /* ---- History chip ranges (mulRange: <1.5 / <2 / <5 / >=5) ---- */
+  --tb-chip-1: #4e6355;                  /* muted sage */
+  --tb-chip-2: #00a38f;                  /* electric teal */
+  --tb-chip-3: #3ec22b;                  /* vivid green */
+  --tb-chip-4: #c6f31d;                  /* neon, dark text */
+  --tb-chip-4-text: #142000;
+
+  /* ---- Viewer states ---- */
+  --tb-loading-grad:
+    radial-gradient(58% 66% at 50% 30%, rgba(198, 243, 29, .13), transparent 66%),
+    linear-gradient(180deg, #081505 0%, #0f2b0c 50%, #0d4530 100%);
+  --tb-viewer-idle-grad:
+    radial-gradient(58% 66% at 50% 30%, rgba(198, 243, 29, .15), transparent 66%),
+    linear-gradient(180deg, #0a1d09 0%, #123512 55%, #0e4c33 100%);
+  --tb-viewer-live: #060a04;             /* near-black with green tint */
+  --tb-viewer-result: #8f1d1d;
+  --tb-waiting-text: #f6ffe0;
+
+  /* ---- Multiplier badge ---- */
+  --tb-badge-bg: rgba(8, 16, 6, .82);
+  --tb-badge-border: rgba(198, 243, 29, .30);
+  --tb-badge-glow: rgba(198, 243, 29, .16);
+  --tb-badge-glow-crash: rgba(198, 243, 29, .45);
+  --tb-badge-bg-result: #14494f;         /* deep teal badge on the red wash */
+  --tb-toast-bg: rgba(8, 16, 6, .88);
+
+  /* ---- Toggles / controls ---- */
+  --tb-toggle-bg: rgba(2, 4, 1, .72);
+  --tb-toggle-active-bg: var(--tb-primary);
+  --tb-toggle-active-text: var(--tb-on-primary);
+  --tb-switch-bg: rgba(255, 255, 255, .18);
+  --tb-stepper-btn-bg: rgba(198, 243, 29, .14);
+  --tb-denom-bg: rgba(198, 243, 29, .09);
+  --tb-denom-bg-hover: rgba(198, 243, 29, .22);
+
+  /* ---- Bet button states ---- */
+  --tb-btn-bet-grad: linear-gradient(180deg, #9de83b 0%, #52b915 52%, #2f8f06 100%);
+  --tb-btn-bet-border: rgba(255, 255, 255, .30);
+  --tb-btn-bet-shadow: rgba(110, 220, 40, .45);
+  --tb-btn-cancel-grad: linear-gradient(180deg, #cf5044 0%, #92251d 100%);
+  --tb-btn-cancel-border: rgba(255, 255, 255, .22);
+  --tb-btn-cashout-grad: linear-gradient(180deg, #ffc14d 0%, #e08a00 100%);
+  --tb-btn-cashout-border: rgba(255, 255, 255, .30);
+  --tb-btn-cashout-shadow: rgba(255, 178, 40, .45);
+
+  /* ---- Canvas scene colors (read by JS via getComputedStyle) ---- */
+  --tb-scene-curve: #c6f31d;
+  --tb-scene-curve-fill-top: rgba(198, 243, 29, .55);
+  --tb-scene-curve-fill-bottom: rgba(198, 243, 29, .06);
+  --tb-scene-ripple: rgba(198, 243, 29, .05);
+  --tb-scene-silhouette: #0d1406;
+  --tb-scene-silhouette-window: rgba(198, 243, 29, .35);
+  --tb-scene-dial: rgba(198, 243, 29, .28);
+  --tb-scene-dial-text: rgba(198, 243, 29, .55);
+  --tb-scene-result-wash: #8f1d1d;
+  --tb-scene-result-ripple: rgba(255, 90, 70, .10);
+}

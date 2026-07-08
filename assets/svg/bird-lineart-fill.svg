@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="200" viewBox="0 0 240 200">
+  <!-- filled layer revealed bottom-up as the countdown progress indicator -->
+  <g fill="#c6f31d" stroke="#c6f31d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(98 66) rotate(-78)"><ellipse cx="30" cy="0" rx="28" ry="9"/></g>
+    <g transform="translate(98 66) rotate(-112)"><ellipse cx="34" cy="0" rx="32" ry="10"/></g>
+    <g transform="translate(98 66) rotate(-146)"><ellipse cx="32" cy="0" rx="30" ry="9.5"/></g>
+    <g transform="translate(70 106) rotate(184)"><ellipse cx="26" cy="0" rx="26" ry="8"/></g>
+    <ellipse cx="132" cy="108" rx="63" ry="61"/>
+    <path d="M190 84 L 233 79 L 196 103 Z"/>
+    <path d="M199 112 L 221 106 L 201 122 Z"/>
+    <path d="M120 164 C 120 175 128 179 136 176 M146 166 C 147 176 155 180 161 177" fill="none"/>
+  </g>
+  <!-- keep the face readable inside the solid silhouette -->
+  <circle cx="172" cy="82" r="12" fill="#182408" stroke="none"/>
+  <path d="M194 103 L 224 92 L 198 112 Z" fill="#182408" stroke="none"/>
+</svg>

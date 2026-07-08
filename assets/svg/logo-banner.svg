@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 56">
+  <!-- header wordmark -->
+  <path d="M28 4 L44 4 L34 24 L48 24 L18 52 L28 30 L16 30 Z"
+        fill="#d8f542" stroke="#8fb812" stroke-width="3" stroke-linejoin="round"/>
+  <text x="58" y="39" fill="#ffffff" font-family="Inter, 'Arial Black', Arial, sans-serif"
+        font-size="30" font-weight="900" letter-spacing="2">THUNDERBIRD</text>
+</svg>

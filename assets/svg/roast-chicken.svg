@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="180" viewBox="0 0 260 180">
+  <!-- result-state signature: roast chicken silhouette -->
+  <g fill="#150d0d">
+    <!-- body -->
+    <ellipse cx="106" cy="110" rx="80" ry="52" transform="rotate(-7 106 110)"/>
+    <!-- tail nub -->
+    <path d="M34 92 C 20 84 12 90 8 102 C 18 104 24 110 26 120 C 34 116 40 106 42 102 Z"/>
+    <!-- drumstick 1 (upper) -->
+    <path d="M144 72 C 156 56 172 44 188 38 L 198 56 C 184 62 170 74 160 88 Z"/>
+    <circle cx="196" cy="32" r="9"/>
+    <circle cx="209" cy="43" r="9"/>
+    <!-- drumstick 2 (lower) -->
+    <path d="M168 102 C 184 90 202 80 220 76 L 226 96 C 210 100 194 110 182 122 Z"/>
+    <circle cx="227" cy="68" r="9"/>
+    <circle cx="236" cy="86" r="9"/>
+  </g>
+  <!-- wing detail: thin warm outline, reads against the red wash -->
+  <path d="M74 106 C 92 94 118 92 136 100 C 124 116 98 124 80 120 C 74 118 72 112 74 106 Z"
+        fill="none" stroke="#c24a3a" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M88 108 C 100 102 114 101 124 104" fill="none" stroke="#c24a3a" stroke-width="3" stroke-linecap="round"/>
+</svg>

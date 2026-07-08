@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Thunderbird — asset gallery</title>
+  <style>
+    body { background: #0b130a; color: #e4f0d1; font-family: Inter, sans-serif; padding: 24px; }
+    h2 { font-size: 14px; text-transform: uppercase; letter-spacing: .08em; color: #c6f31d; }
+    .row { display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-end; margin-bottom: 28px; }
+    .cell { text-align: center; }
+    .cell img { display: block; margin: 0 auto 6px; }
+    .cell span { font-size: 11px; opacity: .6; }
+    .dark { background: #060a04; padding: 12px; border-radius: 8px; }
+    .red { background: #8f1d1d; padding: 12px; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h2>Bird states</h2>
+  <div class="row">
+    <div class="cell dark"><img src="svg/bird-flat.svg" width="220"><span>bird-flat</span></div>
+    <div class="cell dark"><img src="svg/bird-lineart.svg" width="180"><span>lineart</span></div>
+    <div class="cell dark"><img src="svg/bird-lineart-fill.svg" width="180"><span>lineart-fill</span></div>
+    <div class="cell dark"><img src="svg/bird-skeleton.svg" width="220"><span>skeleton</span></div>
+    <div class="cell red"><img src="svg/roast-chicken.svg" width="220"><span>roast-chicken</span></div>
+  </div>
+  <h2>Logos</h2>
+  <div class="row">
+    <div class="cell"><img src="svg/logo-badge.svg" width="200"><span>badge</span></div>
+    <div class="cell"><img src="svg/logo-banner.svg" width="300"><span>banner</span></div>
+  </div>
+  <h2>Avatars</h2>
+  <div class="row">
+    <div class="cell"><img src="avatars/av1.svg" width="56"><span>av1</span></div>
+    <div class="cell"><img src="avatars/av2.svg" width="56"><span>av2</span></div>
+    <div class="cell"><img src="avatars/av3.svg" width="56"><span>av3</span></div>
+    <div class="cell"><img src="avatars/av4.svg" width="56"><span>av4</span></div>
+    <div class="cell"><img src="avatars/av5.svg" width="56"><span>av5</span></div>
+    <div class="cell"><img src="avatars/av6.svg" width="56"><span>av6</span></div>
+    <div class="cell"><img src="avatars/av7.svg" width="56"><span>av7</span></div>
+    <div class="cell"><img src="avatars/av8.svg" width="56"><span>av8</span></div>
+  </div>
+  <h2>Icons</h2>
+  <div class="row" id="icons"></div>
+  <script>
+    ['home','help','settings','sound-on','sound-off','history','refresh','send','chat','shield','minus','plus','bets','user','trend','close']
+      .forEach(n => {
+        const d = document.createElement('div');
+        d.className = 'cell dark';
+        d.innerHTML = `<img src="svg/icon-${n}.svg" width="26"><span>${n}</span>`;
+        document.getElementById('icons').appendChild(d);
+      });
+  </script>
+</body>
+</html>

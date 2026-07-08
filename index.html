@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <!-- Thunderbird Crash Game -->
+  <title>Thunderbird Crash Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="icon" type="image/svg+xml" href="assets/svg/logo-badge.svg">
+  <link rel="stylesheet" href="css/main.css">
+  <!-- Per-game theme stylesheet: swapped by id, same pattern as production (game-theme) -->
+  <link rel="stylesheet" id="game-theme" href="css/thunderbird.css">
+</head>
+
+<body>
+  <!-- ============ Loading screen (Frame 1) ============ -->
+  <div id="loading-screen" class="loading-screen">
+    <img class="loading-logo" src="assets/svg/logo-badge.svg" alt="Thunderbird">
+    <div class="bird-loader" id="loading-bird">
+      <img class="bird-outline" src="assets/svg/bird-lineart.svg" alt="">
+      <div class="bird-fill-wrap"><img class="bird-filled" src="assets/svg/bird-lineart-fill.svg" alt=""></div>
+    </div>
+    <div class="loading-text">LOADING<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span></div>
+  </div>
+
+  <div id="app" class="app" hidden>
+    <!-- ============ Header ============ -->
+    <header class="header">
+      <div class="header-left">
+        <button class="icon-btn home-btn" id="home-btn" title="Home" aria-label="Home"></button>
+        <div class="logo"><img src="assets/svg/logo-bolt.svg" alt=""><span>THUNDERBIRD</span></div>
+      </div>
+
+      <div class="history-panel">
+        <div class="history scroll" id="history-strip" aria-label="Multiplier history"></div>
+        <button class="history-btn" id="history-toggle" title="Round history" aria-label="Round history"></button>
+        <div class="history-expand" id="history-expand" hidden></div>
+      </div>
+
+      <div class="header-right">
+        <div class="balance-panel">
+          <div class="label" data-i18n="Balance">BALANCE</div>
+          <div class="balance" id="balance-value">€0.00</div>
+        </div>
+        <img class="profile" id="player-avatar" src="assets/avatars/av1.svg" alt="Avatar">
+        <button class="icon-btn help-btn" id="help-btn" title="How to play" aria-label="How to play"></button>
+        <button class="icon-btn settings-btn" id="settings-btn" title="Settings" aria-label="Settings"></button>
+        <button class="icon-btn mute-btn muted" id="mute-btn" title="Sound" aria-label="Sound"></button>
+      </div>
+    </header>
+
+    <!-- ============ Main layout ============ -->
+    <main class="main">
+      <!-- Left: bets lists -->
+      <aside class="side-panel bets-panel" id="bets-panel"></aside>
+
+      <!-- Center: game viewer + bet panels -->
+      <section class="center-col">
+        <div class="viewer" id="viewer" data-state="loading">
+          <canvas id="game-canvas"></canvas>
+
+          <!-- Waiting for next round (Frame 2) -->
+          <div class="waiting-overlay" id="waiting-overlay" hidden>
+            <div class="waiting-text">WAITING FOR<br>NEXT ROUND</div>
+            <div class="bird-loader" id="waiting-bird">
+              <img class="bird-outline" src="assets/svg/bird-lineart.svg" alt="">
+              <div class="bird-fill-wrap"><img class="bird-filled" src="assets/svg/bird-lineart-fill.svg" alt=""></div>
+            </div>
+          </div>
+
+          <!-- Multiplier badge (Frames 3-6) -->
+          <div class="multiplier-badge" id="multiplier-badge" hidden>
+            <span id="multiplier-text">1.00x</span>
+          </div>
+
+          <!-- Cashout celebrations (one card per market, stacked side by side) -->
+          <div class="win-toasts" id="win-toasts"></div>
+        </div>
+
+        <div class="bet-panels" id="bet-panels"></div>
+      </section>
+
+      <!-- Right: chat -->
+      <aside class="side-panel chat-panel" id="chat-panel"></aside>
+    </main>
+  </div>
+
+  <!-- Dialog layer (help / settings / sound consent / round info) -->
+  <div class="dialog-layer" id="dialog-layer" hidden></div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
