@@ -153,25 +153,33 @@ class Scene {
     const birdScale = Math.min(view.s, w / 1920) * BIRD_SCALE;
     const birdWidth = 543 * birdScale;
 
+    // bird position + fresh trail sparks are computed first, but everything
+    // is drawn after the particles so the bird sits on top of its own trail.
+    let bx = 0;
+    let by = 0;
+    if (!isCrash) {
+      // bird eases in from the lower-left during take-off
+      const start = { x: -birdWidth, y: plotArea(w, h).bottom - h * 0.05 };
+      const ease = 1 - (1 - takeoffP) ** 3;
+      bx = start.x + (head.x - start.x) * ease;
+      by = start.y + (head.y - start.y) * ease;
+
+      const tail = flyingBirdTailPoint(bx, by, birdScale, elapsed, angle * 0.5);
+      this.particles.trail(tail.x, tail.y, angle, h / 450);
+    }
+
+    // particles render behind the bird / crash actors
+    this.particles.update(dt);
+    this.particles.draw(ctx, this.theme.curve);
+
     if (isCrash) {
       const t = (now - this.crashAt) / 1000;
       this.renderCrashFlash(now, w, h);
       drawLightningBolt(ctx, head.x, head.y, birdScale / BIRD_SCALE, t);
       drawElectrocutedBird(ctx, head.x, head.y, birdScale, view.s, t);
     } else {
-      // bird eases in from the lower-left during take-off
-      const start = { x: -birdWidth, y: plotArea(w, h).bottom - h * 0.05 };
-      const ease = 1 - (1 - takeoffP) ** 3;
-      const bx = start.x + (head.x - start.x) * ease;
-      const by = start.y + (head.y - start.y) * ease;
-
-      const tail = flyingBirdTailPoint(bx, by, birdScale, elapsed, angle * 0.5);
-      this.particles.trail(tail.x, tail.y, angle, h / 450);
       drawFlyingBird(ctx, bx, by, birdScale, elapsed, angle * 0.5);
     }
-
-    this.particles.update(dt);
-    this.particles.draw(ctx, this.theme.curve);
     ctx.restore();
   }
 
