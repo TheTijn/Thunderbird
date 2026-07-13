@@ -13,5 +13,8 @@
   },
   "dependencies": {
     "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "pngjs": "^7.0.0"
   }
 }

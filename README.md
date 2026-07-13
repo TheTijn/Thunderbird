@@ -40,8 +40,14 @@ which `server.js` reads automatically — no port needs to be hard-coded.
 - **Theme mechanism** — all colors live in `css/thunderbird.css` behind the
   `<link id="game-theme">` swap pattern used in production. The canvas reads its palette
   from the same CSS variables (`--tb-scene-*`).
-- **Assets** — original flat SVG art in `assets/svg/` (bird, skeleton bird, roast chicken,
-  logo, icons). Swap files in place to drop in final Luma art; no code changes needed.
+- **Assets** — final production art in `assets/img/`, sliced from the delivered Spine
+  export (`art-src/thunderbird_FINAL.*`) by `node scripts/extract-atlas.mjs`. The script
+  un-premultiplies the atlas pages, composes the 9 bird flight frames, converts the
+  loading mask to a CSS alpha mask, and writes `assets/img/manifest.json` with each
+  sprite's 1920x1080 design-space placement (computed from the Spine setup pose).
+  Animation timings in `js/canvas/` mirror the Spine animations (`bird_flying`,
+  `bird_background`, `bird_electrocuted`, `bird_lightning_bolt`, `bird_endscreen`).
+  UI icons and the logo remain SVG in `assets/svg/`.
 - **Audio** — all SFX synthesized with WebAudio (`js/audio/sfx.js`); muted until the player
   opts in, toggle in the header.
 

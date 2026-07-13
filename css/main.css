@@ -73,6 +73,9 @@ input {
   justify-content: center;
   gap: 40px;
   background: var(--tb-loading-grad);
+  background-image: url("../assets/img/loading_screen.png");
+  background-size: cover;
+  background-position: center;
   transition: opacity .5s ease;
 }
 
@@ -83,11 +86,13 @@ input {
   filter: drop-shadow(0 12px 28px rgba(0, 0, 0, .45));
 }
 
-/* Bird line-art loader: outline + bottom-up fill (Rodeo bull-loader pattern) */
+/* Bird neon loader: outline + bottom-up fill (Rodeo bull-loader pattern).
+   Art: loading_screen_bird.png (outline, 521x603) with loading_screen_fill.png
+   (510x593) inset by (7,15) design px from the outline's top-left. */
 .bird-loader {
   position: relative;
-  width: 160px;
-  height: 130px;
+  width: 140px;
+  height: 162px;
 }
 
 .bird-loader .bird-outline {
@@ -110,11 +115,20 @@ input {
 
 .bird-loader .bird-fill-wrap .bird-filled {
   position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 160px;
-  height: 130px;
+  left: 1.34%;
+  bottom: -0.83%;
+  width: 97.9%;
   display: block;
+  /* clip the fill rectangle to the bird silhouette (loading_screen_mask,
+     558x735 at -22,-73 design px relative to the 510x593 fill) */
+  -webkit-mask-image: url("../assets/img/loading_screen_mask.png");
+  mask-image: url("../assets/img/loading_screen_mask.png");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 109.41% 123.95%;
+  mask-size: 109.41% 123.95%;
+  -webkit-mask-position: 45.83% 51.41%;
+  mask-position: 45.83% 51.41%;
 }
 
 .loading-text {

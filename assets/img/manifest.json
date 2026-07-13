@@ -1,0 +1,371 @@
+{
+  "regions": {
+    "background": {
+      "w": 1920,
+      "h": 1080,
+      "ox": 0,
+      "oy": 0,
+      "ow": 1920,
+      "oh": 1080
+    },
+    "city_skyline": {
+      "w": 1162,
+      "h": 666,
+      "ox": 38,
+      "oy": 68,
+      "ow": 1243,
+      "oh": 735
+    },
+    "tree_line_back": {
+      "w": 3840,
+      "h": 282,
+      "ox": 104,
+      "oy": 1142,
+      "ow": 4048,
+      "oh": 1920
+    },
+    "tree_line_front": {
+      "w": 3840,
+      "h": 344,
+      "ox": 43,
+      "oy": 1080,
+      "ow": 4048,
+      "oh": 1920
+    },
+    "top_cloud1": {
+      "w": 4309,
+      "h": 164,
+      "ox": 0,
+      "oy": 0,
+      "ow": 4309,
+      "oh": 1080
+    },
+    "top_cloud2": {
+      "w": 4016,
+      "h": 304,
+      "ox": 0,
+      "oy": 0,
+      "ow": 4309,
+      "oh": 1080
+    },
+    "top_cloud3": {
+      "w": 3426,
+      "h": 164,
+      "ox": 0,
+      "oy": 40,
+      "ow": 4309,
+      "oh": 1080
+    },
+    "top_cloud1_lightning1": {
+      "w": 1038,
+      "h": 112,
+      "ox": 1492,
+      "oy": 0,
+      "ow": 4309,
+      "oh": 1080
+    },
+    "top_cloud1_lightning2": {
+      "w": 424,
+      "h": 122,
+      "ox": 198,
+      "oy": 0,
+      "ow": 4309,
+      "oh": 1080
+    },
+    "top_cloud2_lightning1": {
+      "w": 1122,
+      "h": 129,
+      "ox": 17,
+      "oy": 0,
+      "ow": 4309,
+      "oh": 1080
+    },
+    "top_cloud2_lightning2": {
+      "w": 987,
+      "h": 218,
+      "ox": 1481,
+      "oy": 0,
+      "ow": 4309,
+      "oh": 1080
+    },
+    "bird_electrocuted": {
+      "w": 637,
+      "h": 562,
+      "ox": 156,
+      "oy": 163,
+      "ow": 885,
+      "oh": 885
+    },
+    "bird_static": {
+      "w": 601,
+      "h": 500,
+      "ox": 147,
+      "oy": 203,
+      "ow": 885,
+      "oh": 885
+    },
+    "bird_dead": {
+      "w": 740,
+      "h": 467,
+      "ox": 664,
+      "oy": 853,
+      "ow": 1920,
+      "oh": 1920
+    },
+    "bird_steam": {
+      "w": 197,
+      "h": 262,
+      "ox": 877,
+      "oy": 698,
+      "ow": 1920,
+      "oh": 1920
+    },
+    "bird_lightning_bolt": {
+      "w": 814,
+      "h": 1885,
+      "ox": 462,
+      "oy": 16,
+      "ow": 1920,
+      "oh": 1920
+    },
+    "bird_shadow": {
+      "w": 491,
+      "h": 104,
+      "ox": 720,
+      "oy": 1261,
+      "ow": 1920,
+      "oh": 1920
+    },
+    "bird_endscreen": {
+      "w": 1920,
+      "h": 1081,
+      "ox": 0,
+      "oy": 343,
+      "ow": 1920,
+      "oh": 1920
+    },
+    "loading_screen": {
+      "w": 1920,
+      "h": 1080,
+      "ox": 0,
+      "oy": 0,
+      "ow": 1920,
+      "oh": 1080
+    },
+    "loading_screen_bird": {
+      "w": 521,
+      "h": 603,
+      "ox": 707,
+      "oy": 403,
+      "ow": 1920,
+      "oh": 1080
+    },
+    "loading_screen_fill": {
+      "w": 510,
+      "h": 593,
+      "ox": 714,
+      "oy": 418,
+      "ow": 1920,
+      "oh": 1080
+    },
+    "loading_screen_mask": {
+      "w": 558,
+      "h": 735,
+      "ox": 692,
+      "oy": 345,
+      "ow": 1920,
+      "oh": 1080
+    }
+  },
+  "slots": {
+    "background": {
+      "cx": 960,
+      "cy": 540,
+      "rot": 0,
+      "sx": 1,
+      "sy": 1,
+      "w": 1920,
+      "h": 1080,
+      "attachment": "background"
+    },
+    "city_skyline": {
+      "cx": 1056.5,
+      "cy": 713.5,
+      "rot": 0,
+      "sx": 1,
+      "sy": 1,
+      "w": 1243,
+      "h": 735,
+      "attachment": "city_skyline"
+    },
+    "tree_line_back": {
+      "cx": 1500.31,
+      "cy": 624.26,
+      "rot": 0,
+      "sx": 1,
+      "sy": 1,
+      "w": 4048,
+      "h": 1920,
+      "attachment": "tree_line_back"
+    },
+    "tree_line_front": {
+      "cx": 1878.85,
+      "cy": 681.39,
+      "rot": 0,
+      "sx": 1,
+      "sy": 1,
+      "w": 4048,
+      "h": 1920,
+      "attachment": "tree_line_front"
+    },
+    "top_cloud1": {
+      "cx": 2141.9,
+      "cy": 534.29,
+      "rot": 0,
+      "sx": 1,
+      "sy": 1,
+      "w": 4309,
+      "h": 1080,
+      "attachment": "top_cloud1"
+    },
+    "top_cloud2": {
+      "cx": 2141.9,
+      "cy": 496.21,
+      "rot": 0,
+      "sx": 1,
+      "sy": 1,
+      "w": 4309,
+      "h": 1080,
+      "attachment": "top_cloud2"
+    },
+    "top_cloud3": {
+      "cx": 2320.84,
+      "cy": 480.46,
+      "rot": -0.05,
+      "sx": 1,
+      "sy": 1,
+      "w": 4309,
+      "h": 1080,
+      "attachment": "top_cloud3"
+    },
+    "top_cloud1_lightning3": {
+      "cx": 2135.25,
+      "cy": 531.59,
+      "rot": 0.21,
+      "sx": 1,
+      "sy": 1,
+      "w": 4309,
+      "h": 1080,
+      "attachment": "top_cloud1_lightning1"
+    },
+    "top_cloud1_lightning4": {
+      "cx": 2144.95,
+      "cy": 529.06,
+      "rot": 0.21,
+      "sx": 1,
+      "sy": 1,
+      "w": 4309,
+      "h": 1080,
+      "attachment": "top_cloud1_lightning2"
+    },
+    "top_cloud2_lightning1": {
+      "cx": 2105.05,
+      "cy": 486.45,
+      "rot": 0.27,
+      "sx": 1,
+      "sy": 1,
+      "w": 4309,
+      "h": 1080,
+      "attachment": "top_cloud2_lightning1"
+    },
+    "top_cloud2_lightning2": {
+      "cx": 2117.92,
+      "cy": 511.13,
+      "rot": 0.27,
+      "sx": 1,
+      "sy": 1,
+      "w": 4309,
+      "h": 1080,
+      "attachment": "top_cloud2_lightning2"
+    },
+    "bird_electrocuted": {
+      "cx": 972.67,
+      "cy": 615.68,
+      "rot": 0,
+      "sx": 1,
+      "sy": 1,
+      "w": 885,
+      "h": 885,
+      "attachment": "bird_electrocuted"
+    },
+    "bird_static": {
+      "cx": 972.76,
+      "cy": 616.36,
+      "rot": 0,
+      "sx": 1,
+      "sy": 1,
+      "w": 885,
+      "h": 885,
+      "attachment": "bird_static"
+    },
+    "bird_dead": {
+      "cx": 960,
+      "cy": -387.45,
+      "rot": 0,
+      "sx": 1,
+      "sy": 1,
+      "w": 1920,
+      "h": 1920,
+      "attachment": "bird_dead"
+    },
+    "bird_steam": {
+      "cx": 960,
+      "cy": 616,
+      "rot": 90,
+      "sx": 1,
+      "sy": 1,
+      "w": 1920,
+      "h": 1920,
+      "attachment": "bird_steam"
+    },
+    "bird_lightning_bolt": {
+      "cx": 1025.57,
+      "cy": 628.3,
+      "rot": -7.05,
+      "sx": 0.5,
+      "sy": 0.5,
+      "w": 1920,
+      "h": 1920,
+      "attachment": "bird_lightning_bolt"
+    },
+    "bird_shadow": {
+      "cx": 960,
+      "cy": 616,
+      "rot": 0,
+      "sx": 1,
+      "sy": 1,
+      "w": 1920,
+      "h": 1920,
+      "attachment": "bird_shadow"
+    },
+    "bird_endscreen": {
+      "cx": 960,
+      "cy": 616,
+      "rot": 0,
+      "sx": 1,
+      "sy": 1,
+      "w": 1920,
+      "h": 1920,
+      "attachment": "bird_endscreen"
+    }
+  },
+  "birdFrames": {
+    "count": 9,
+    "w": 543,
+    "h": 682,
+    "cropX": -287.5,
+    "cropY": -314.5,
+    "cx": 960,
+    "cy": 616
+  }
+}

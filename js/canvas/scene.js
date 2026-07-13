@@ -3,11 +3,19 @@ import { bus } from '../core/bus.js';
 import { gameServer } from '../sim/gameServer.js';
 import { multiplierAtTime } from '../sim/rng.js';
 import { readSceneTheme } from './theme.js';
-import { drawRipples, drawSilhouettes } from './background.js';
+import { loadArt, coverView } from './assets.js';
+import { drawBackground } from './background.js';
 import { computeCurvePoints, drawCurve, headAngle, plotArea } from './curve.js';
 import { drawDial } from './dial.js';
 import { ParticleSystem } from './particles.js';
-import { loadSprites, drawSprite } from './bird.js';
+import {
+  BIRD_SCALE,
+  drawFlyingBird,
+  flyingBirdTailPoint,
+  drawElectrocutedBird,
+  drawLightningBolt,
+  drawEndscreen,
+} from './bird.js';
 
 // Canvas scene — renders the six visual states of the round on a single
 // 2D canvas sitting inside the .viewer. The DOM handles the waiting text,
@@ -18,10 +26,10 @@ class Scene {
     this.particles = new ParticleSystem();
     this.launchAt = 0;
     this.crashAt = 0;
+    this.resultAt = 0;
     this.crashElapsed = 0;
     this.crashHead = null;
-    this.bolt = [];
-    this.boltSeedAt = 0;
+    this.bgTime = 0;
     this.lastFrame = 0;
   }
 
@@ -30,7 +38,7 @@ class Scene {
     this.viewer = viewer;
     this.ctx = canvas.getContext('2d');
     this.theme = readSceneTheme();
-    await loadSprites();
+    await loadArt();
 
     const fit = () => {
       const dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -61,7 +69,10 @@ class Scene {
       this.crashHead = pts[pts.length - 1];
       this.particles.burst(this.crashHead.x, this.crashHead.y, 60, h / 450);
     });
-    bus.on('OnRoundCompleted', () => this.setMode('result'));
+    bus.on('OnRoundCompleted', () => {
+      this.resultAt = performance.now();
+      this.setMode('result');
+    });
 
     requestAnimationFrame((t) => this.frame(t));
   }
@@ -85,15 +96,19 @@ class Scene {
   render(now, dt) {
     const { ctx } = this;
     const { w, h } = this.size();
+    this.bgTime += dt; // scenery keeps drifting in every state
     ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
 
-    if (this.mode === 'takeoff' || this.mode === 'live' || this.mode === 'crash') {
-      this.renderFlight(now, dt, w, h);
-    } else if (this.mode === 'result') {
+    if (this.mode === 'result') {
       this.renderResult(now, w, h);
+    } else if (this.mode === 'takeoff' || this.mode === 'live' || this.mode === 'crash') {
+      this.renderFlight(now, dt, w, h);
+    } else if (this.mode === 'betting' || this.mode === 'locked') {
+      // scenery behind the DOM waiting overlay
+      drawBackground(ctx, coverView(w, h), w, h, this.bgTime);
     }
-    // betting/locked/loading: CSS gradient + DOM overlay only
+    // loading: DOM loading screen covers the canvas
   }
 
   renderFlight(now, dt, w, h) {
@@ -107,6 +122,7 @@ class Scene {
     const elapsed = isCrash ? this.crashElapsed : gameServer.elapsedSeconds();
     const takeoffP = Math.min(1, sinceLaunch / CONFIG.takeoffMs);
     const fadeIn = isCrash ? 1 : takeoffP;
+    const view = coverView(w, h);
 
     // crash shake
     ctx.save();
@@ -124,8 +140,7 @@ class Scene {
       ? Math.min(multiplierAtTime(elapsed), gameServer.crashPoint)
       : multiplierAtTime(elapsed);
 
-    drawRipples(ctx, w, h, this.theme.ripple, elapsed);
-    drawSilhouettes(ctx, w, h, this.theme.silhouette, this.theme.silhouetteWindow);
+    drawBackground(ctx, view, w, h, this.bgTime);
     drawDial(ctx, w, h, this.theme, fadeIn, mult);
 
     const points = computeCurvePoints(elapsed, w, h);
@@ -133,28 +148,26 @@ class Scene {
 
     const head = isCrash && this.crashHead ? this.crashHead : points[points.length - 1];
     const angle = headAngle(points);
-    const birdWidth = Math.max(46, w * 0.085);
+    // px per authored design unit; keeps the bird at the mock-up proportion
+    // but caps it so it never dwarfs a small canvas
+    const birdScale = Math.min(view.s, w / 1920) * BIRD_SCALE;
+    const birdWidth = 543 * birdScale;
 
     if (isCrash) {
-      this.renderCrashFx(now, w, h, head);
-      drawSprite(ctx, 'skeleton', head.x, head.y - birdWidth * 0.3, {
-        angle: angle * 0.4,
-        width: birdWidth,
-      });
+      const t = (now - this.crashAt) / 1000;
+      this.renderCrashFlash(now, w, h);
+      drawLightningBolt(ctx, head.x, head.y, birdScale / BIRD_SCALE, t);
+      drawElectrocutedBird(ctx, head.x, head.y, birdScale, view.s, t);
     } else {
       // bird eases in from the lower-left during take-off
       const start = { x: -birdWidth, y: plotArea(w, h).bottom - h * 0.05 };
       const ease = 1 - (1 - takeoffP) ** 3;
       const bx = start.x + (head.x - start.x) * ease;
       const by = start.y + (head.y - start.y) * ease;
-      const bob = Math.sin(elapsed * 4.5) * 0.05;
 
-      this.particles.trail(bx - birdWidth * 0.35, by + birdWidth * 0.12, angle, h / 450);
-      drawSprite(ctx, 'flying', bx, by - birdWidth * 0.3, {
-        angle: angle * 0.5 + bob,
-        width: birdWidth,
-        glow: this.theme.curve,
-      });
+      const tail = flyingBirdTailPoint(bx, by, birdScale, elapsed, angle * 0.5);
+      this.particles.trail(tail.x, tail.y, angle, h / 450);
+      drawFlyingBird(ctx, bx, by, birdScale, elapsed, angle * 0.5);
     }
 
     this.particles.update(dt);
@@ -162,38 +175,9 @@ class Scene {
     ctx.restore();
   }
 
-  renderCrashFx(now, w, h, head) {
+  renderCrashFlash(now, w, h) {
     const { ctx } = this;
     const t = (now - this.crashAt) / 1000;
-
-    // lightning bolt from the sky to the bird, re-jittered every 70ms
-    if (t < 0.5) {
-      if (now - this.boltSeedAt > 70) {
-        this.boltSeedAt = now;
-        const segments = 6;
-        const startX = Math.min(w - 10, head.x + w * 0.16);
-        this.bolt = [];
-        for (let i = 0; i <= segments; i += 1) {
-          const p = i / segments;
-          this.bolt.push({
-            x: startX + (head.x - startX) * p + (i === 0 || i === segments ? 0 : (Math.random() - 0.5) * w * 0.03),
-            y: -10 + (head.y + 10) * p,
-          });
-        }
-      }
-      ctx.save();
-      ctx.lineJoin = 'round';
-      ctx.strokeStyle = this.theme.curve;
-      ctx.shadowColor = this.theme.curve;
-      ctx.shadowBlur = 22;
-      ctx.globalAlpha = 0.9 * (1 - t * 2);
-      ctx.lineWidth = Math.max(3, h * 0.012);
-      ctx.beginPath();
-      this.bolt.forEach((p, i) => (i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y)));
-      ctx.stroke();
-      ctx.restore();
-    }
-
     // brief flash right at impact — keep subtle so the frame stays readable
     if (t < 0.22) {
       ctx.save();
@@ -205,32 +189,8 @@ class Scene {
   }
 
   renderResult(now, w, h) {
-    const { ctx } = this;
-    drawRipples(ctx, w, h, this.theme.resultRipple, now / 1000);
-
-    const cx = w * 0.5;
-    const cy = h * 0.58;
-    const chickenW = Math.min(w * 0.34, h * 0.62);
-
-    // soft glow behind the chicken
-    const glow = ctx.createRadialGradient(cx, cy, chickenW * 0.1, cx, cy, chickenW * 0.85);
-    glow.addColorStop(0, 'rgba(0,0,0,0.34)');
-    glow.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = glow;
-    ctx.beginPath();
-    ctx.arc(cx, cy, chickenW * 0.9, 0, Math.PI * 2);
-    ctx.fill();
-
-    // faint ring arc, per the result mock-up
-    ctx.save();
-    ctx.strokeStyle = 'rgba(255,120,100,0.35)';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(cx, cy - h * 0.05, h * 0.42, Math.PI * 0.95, Math.PI * 2.05);
-    ctx.stroke();
-    ctx.restore();
-
-    drawSprite(ctx, 'chicken', cx, cy, { width: chickenW });
+    const view = coverView(w, h);
+    drawEndscreen(this.ctx, view, (now - this.resultAt) / 1000);
   }
 }
 
