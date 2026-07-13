@@ -1,6 +1,7 @@
 import { CONFIG } from '../config.js';
 import { bus } from '../core/bus.js';
 import { gameServer } from '../sim/gameServer.js';
+import { multiplierAtTime } from '../sim/rng.js';
 import { readSceneTheme } from './theme.js';
 import { drawRipples, drawSilhouettes } from './background.js';
 import { computeCurvePoints, drawCurve, headAngle, plotArea } from './curve.js';
@@ -117,9 +118,15 @@ class Scene {
       }
     }
 
+    // live multiplier drives the dial rotation; during crash it holds at the
+    // crash point (elapsed is frozen at crashElapsed).
+    const mult = isCrash
+      ? Math.min(multiplierAtTime(elapsed), gameServer.crashPoint)
+      : multiplierAtTime(elapsed);
+
     drawRipples(ctx, w, h, this.theme.ripple, elapsed);
     drawSilhouettes(ctx, w, h, this.theme.silhouette, this.theme.silhouetteWindow);
-    drawDial(ctx, w, h, this.theme, fadeIn);
+    drawDial(ctx, w, h, this.theme, fadeIn, mult);
 
     const points = computeCurvePoints(elapsed, w, h);
     drawCurve(ctx, points, this.theme, w, h);
