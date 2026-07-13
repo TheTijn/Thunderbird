@@ -5,12 +5,28 @@ structurally mirroring the production Rodeo crash game layout so it can travel a
 
 ## Run
 
-Any static file server works (ES modules require http, not `file://`):
+The site ships with a Node.js server (`server.js`) so it can run on Node hosts
+such as Hostinger. ES modules require http, not `file://`.
 
 ```bash
-python3 -m http.server 4173
-# → http://localhost:4173
+npm install
+npm start
+# → http://localhost:3000  (or the PORT the host provides)
 ```
+
+Any static file server also works for a quick look, e.g. `python3 -m http.server 4173`.
+
+## Deploy to Hostinger (Node.js hosting)
+
+1. Upload the project (or connect the git repo) to your Hostinger account.
+2. In hPanel open **Advanced → Node.js** and create an application:
+   - **Application root**: the folder holding `package.json`
+   - **Application startup file**: `server.js`
+   - **Node.js version**: 18 or newer
+3. Run **NPM Install** (installs Express), then **Start** the application.
+
+Hostinger runs the app behind Passenger and injects the port via `process.env.PORT`,
+which `server.js` reads automatically — no port needs to be hard-coded.
 
 ## What's inside
 

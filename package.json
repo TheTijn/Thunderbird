@@ -1,0 +1,17 @@
+{
+  "name": "thunderbird-crash-game",
+  "version": "1.0.0",
+  "description": "Standalone web build of the Thunderbird crash game theme.",
+  "private": true,
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
