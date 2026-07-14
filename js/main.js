@@ -8,6 +8,7 @@ import { initHistory } from './ui/history.js';
 import { initMultiplierOverlay } from './ui/multiplierOverlay.js';
 import { initBetsPanel } from './ui/betsPanel.js';
 import { initChat } from './ui/chat.js';
+import { initViewerControls } from './ui/viewerControls.js';
 import { createBetPanel } from './ui/betPanel.js';
 import { sfx, wireGameSounds } from './audio/sfx.js';
 import { openDialog } from './ui/dialogs.js';
@@ -75,6 +76,10 @@ async function boot() {
   // App must be visible (display != none) before the canvas can size itself.
   app.hidden = false;
   await Promise.all([scene.init(canvas, viewer), animateLoadingBird()]);
+
+  // scene is initialised (its calm:change listener is live) — now sync the
+  // in-viewer controls so the initial preference reaches the scene.
+  initViewerControls();
 
   loadingScreen.classList.add('fade-out');
   setTimeout(() => loadingScreen.remove(), 600);

@@ -34,6 +34,18 @@ export function initHeader() {
   });
   bus.on('sfx:muteChange', renderMute);
 
+  // theme toggle (dark ↔ light). The pre-paint script in index.html sets the
+  // initial data-theme (saved choice, else OS preference); the sun/moon glyph
+  // swaps via CSS. Set the attribute first, then notify the canvas to re-read.
+  document.getElementById('theme-btn').addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = next;
+    try {
+      localStorage.setItem('tb-theme', next);
+    } catch (e) { /* private mode — no persistence */ }
+    bus.emit('theme:change', next);
+  });
+
   // avatar cycles through the local set
   let avatarIndex = 1;
   avatarEl.addEventListener('click', () => {

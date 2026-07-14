@@ -193,31 +193,46 @@ input {
   font-weight: 900;
   font-size: 29px;
   letter-spacing: .03em;
-  color: #fff;
+  color: var(--tb-logo-text);
   text-shadow: 0 0 26px var(--tb-primary-dim);
   user-select: none;
 }
 .logo img { height: 32px; display: block; }
 
 .icon-btn {
+  position: relative;
   width: 34px;
   height: 34px;
   border-radius: 50%;
   background-color: var(--tb-icon-btn-bg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 18px 18px;
   transition: background-color .15s ease, transform .1s ease;
   flex: 0 0 auto;
 }
 .icon-btn:hover { background-color: var(--tb-icon-btn-bg-hover); }
 .icon-btn:active { transform: scale(.92); }
 
-.home-btn     { background-image: url("../assets/svg/icon-home.svg"); }
-.help-btn     { background-image: url("../assets/svg/icon-help.svg"); background-color: var(--tb-help-bg); }
-.settings-btn { background-image: url("../assets/svg/icon-settings.svg"); }
-.mute-btn     { background-image: url("../assets/svg/icon-sound-on.svg"); }
-.mute-btn.muted { background-image: url("../assets/svg/icon-sound-off.svg"); }
+/* Glyphs are masked (not background-image'd) so they recolor with the theme
+   via --tb-icon-glyph, while each button keeps its own pill background. */
+.icon-btn::before,
+.history-btn::before,
+.refresh-btn::before,
+.chat-send::before,
+.stepper button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--tb-icon-glyph);
+  -webkit-mask: var(--glyph) no-repeat center / var(--glyph-size, 18px);
+          mask: var(--glyph) no-repeat center / var(--glyph-size, 18px);
+}
+
+.home-btn     { --glyph: url("../assets/svg/icon-home.svg"); }
+.help-btn     { --glyph: url("../assets/svg/icon-help.svg"); background-color: var(--tb-help-bg); }
+.settings-btn { --glyph: url("../assets/svg/icon-settings.svg"); }
+.mute-btn     { --glyph: url("../assets/svg/icon-sound-on.svg"); }
+.mute-btn.muted { --glyph: url("../assets/svg/icon-sound-off.svg"); }
+.theme-btn    { --glyph: url("../assets/svg/icon-sun.svg"); }
+:root[data-theme="light"] .theme-btn { --glyph: url("../assets/svg/icon-moon.svg"); }
 
 .header-right {
   display: flex;
@@ -282,7 +297,7 @@ input {
   font-weight: 700;
   padding: 4px 10px;
   border-radius: 999px;
-  color: #fff;
+  color: var(--tb-chip-text);
   animation: bounce-in-bck .45s both;
   cursor: default;
 }
@@ -299,16 +314,15 @@ input {
 .history-chip.range-4 { background: var(--tb-chip-4); color: var(--tb-chip-4-text); }
 
 .history-btn {
+  position: relative;
   width: 40px;
   height: 30px;
   border-radius: 8px;
   flex: 0 0 auto;
   background-color: var(--tb-history-btn-bg);
-  background-image: url("../assets/svg/icon-history.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 20px 20px;
   border: 1px solid var(--tb-panel-border);
+  --glyph: url("../assets/svg/icon-history.svg");
+  --glyph-size: 20px;
 }
 .history-btn:hover { background-color: var(--tb-icon-btn-bg-hover); }
 
@@ -377,7 +391,7 @@ input {
   border-radius: 10px;
   overflow: hidden;
   background: var(--tb-viewer-idle-grad);
-  box-shadow: inset 0 0 0 1px rgba(198, 243, 29, .12), 0 12px 32px rgba(0, 0, 0, .5);
+  box-shadow: inset 0 0 0 1px var(--tb-viewer-inset), var(--tb-card-shadow);
   transition: background .4s ease;
 }
 
@@ -393,6 +407,43 @@ input {
   height: 100%;
   display: block;
 }
+
+/* ---------- In-viewer controls (over the canvas) ---------- */
+
+/* Frosted pill in the viewer's top-right; glyph + chip use theme tokens so it
+   stays legible on both the dark arena and the bright daytime sky. */
+.viewer-btn {
+  position: absolute;
+  top: clamp(8px, 1.4vw, 16px);
+  right: clamp(8px, 1.4vw, 16px);
+  z-index: 5;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background-color: var(--tb-badge-bg);
+  border: 1px solid var(--tb-badge-border);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  transition: background-color .15s ease, border-color .15s ease, transform .1s ease;
+}
+.viewer-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--tb-icon-glyph);
+  -webkit-mask: var(--glyph) no-repeat center / 19px;
+          mask: var(--glyph) no-repeat center / 19px;
+}
+.viewer-btn:hover { transform: scale(1.06); }
+.viewer-btn:active { transform: scale(.92); }
+
+.calm-btn { --glyph: url("../assets/svg/icon-motion.svg"); }
+.calm-btn.active {
+  --glyph: url("../assets/svg/icon-motion-off.svg");
+  border-color: var(--tb-primary);
+  box-shadow: 0 0 14px var(--tb-badge-glow);
+}
+.calm-btn.active::before { background-color: var(--tb-accent-ink); }
 
 /* ---------- Waiting overlay (Frame 2) ---------- */
 
@@ -447,7 +498,7 @@ input {
 }
 
 .multiplier-badge.crash {
-  color: var(--tb-primary);
+  color: var(--tb-accent-ink);
   border-color: var(--tb-primary-dim);
   box-shadow: 0 0 44px var(--tb-badge-glow-crash);
 }
@@ -487,14 +538,14 @@ input {
   gap: 1px;
   padding: clamp(10px, 1.4vw, 18px) clamp(24px, 3vw, 44px);
   background:
-    radial-gradient(120% 90% at 50% 0%, rgba(198, 243, 29, .20), transparent 62%),
-    rgba(5, 10, 3, .93);
-  border: 2px solid var(--tb-primary);
+    radial-gradient(120% 90% at 50% 0%, var(--tb-toast-radial), transparent 62%),
+    var(--tb-toast-card-bg);
+  border: 2px solid var(--tb-toast-border);
   border-radius: 18px;
   box-shadow:
-    0 0 40px rgba(198, 243, 29, .40),
-    0 0 110px rgba(198, 243, 29, .16),
-    inset 0 0 22px rgba(198, 243, 29, .10);
+    0 0 40px var(--tb-toast-glow),
+    0 0 110px var(--tb-toast-glow),
+    inset 0 0 22px var(--tb-toast-radial);
   text-align: center;
   white-space: nowrap;
   animation: win-pop .5s cubic-bezier(.3, 1.6, .5, 1) both;
@@ -522,7 +573,7 @@ input {
   height: 360px;
   margin: -180px 0 0 -180px;
   z-index: -1;
-  background: repeating-conic-gradient(rgba(198, 243, 29, .14) 0 8deg, transparent 8deg 26deg);
+  background: repeating-conic-gradient(var(--tb-toast-rays) 0 8deg, transparent 8deg 26deg);
   -webkit-mask: radial-gradient(circle, #000 12%, transparent 62%);
   mask: radial-gradient(circle, #000 12%, transparent 62%);
   animation: win-rays 7s linear infinite;
@@ -547,15 +598,15 @@ input {
   font-size: clamp(30px, 3.8vw, 52px);
   font-weight: 900;
   line-height: 1.05;
-  color: var(--tb-primary);
-  text-shadow: 0 0 30px rgba(198, 243, 29, .6);
+  color: var(--tb-toast-amount);
+  text-shadow: 0 0 30px var(--tb-toast-amount-glow);
 }
 
 .win-toast .toast-mult {
   font-family: "Barlow Condensed", "Barlow", sans-serif;
   font-size: clamp(13px, 1.2vw, 16px);
   font-weight: 800;
-  color: #fff;
+  color: var(--tb-toast-mult-text);
   border: 1px solid var(--tb-primary-dim);
   border-radius: 999px;
   padding: 1px 12px;
@@ -596,8 +647,8 @@ input {
 }
 
 .panel-tab.active {
-  color: var(--tb-primary);
-  border-bottom-color: var(--tb-primary);
+  color: var(--tb-accent-ink);
+  border-bottom-color: var(--tb-accent-ink);
 }
 
 .panel-content {
@@ -624,7 +675,7 @@ input {
   letter-spacing: .05em;
   color: var(--tb-text-dim);
 }
-.allbets-header h3 { margin: 0; font-size: 15px; font-weight: 800; color: var(--tb-primary); }
+.allbets-header h3 { margin: 0; font-size: 15px; font-weight: 800; color: var(--tb-accent-ink); }
 
 .bets-legend {
   display: grid;
@@ -671,7 +722,7 @@ input {
 .bet-row .bet-user span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .bet-row .bet-amount { text-align: center; font-weight: 600; }
 .bet-row .bet-cashout { text-align: right; font-weight: 700; }
-.bet-row.cashed .bet-cashout { color: var(--tb-primary); }
+.bet-row.cashed .bet-cashout { color: var(--tb-accent-ink); }
 
 .bet-row .mult-chip {
   display: inline-block;
@@ -681,7 +732,7 @@ input {
   padding: 2px 8px;
   margin-left: 4px;
   background: var(--tb-chip-2);
-  color: #fff;
+  color: var(--tb-chip-text);
 }
 
 /* ---------- My bets ---------- */
@@ -707,7 +758,7 @@ input {
 }
 .mybet-row .mybet-time { color: var(--tb-text-dim); font-size: 11px; }
 .mybet-row .mybet-win { font-weight: 800; text-align: right; }
-.mybet-row.win .mybet-win { color: var(--tb-primary); }
+.mybet-row.win .mybet-win { color: var(--tb-accent-ink); }
 .mybet-row.loss .mybet-win { color: var(--tb-red-text); }
 
 /* ---------- Top bets ---------- */
@@ -745,15 +796,14 @@ input {
 }
 
 .refresh-btn {
+  position: relative;
   width: 26px;
   height: 26px;
   border-radius: 50%;
   margin-left: auto;
   background-color: var(--tb-icon-btn-bg);
-  background-image: url("../assets/svg/icon-refresh.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 14px 14px;
+  --glyph: url("../assets/svg/icon-refresh.svg");
+  --glyph-size: 14px;
 }
 .refresh-btn:hover { background-color: var(--tb-icon-btn-bg-hover); }
 .refresh-btn.spinning { animation: spin .5s linear; }
@@ -798,7 +848,7 @@ input {
 .topbet-details .detail-line .v { font-weight: 700; }
 .topbet-details .detail-line .v.mult-chip {
   background: var(--tb-chip-3);
-  color: #fff;
+  color: var(--tb-chip-text);
   border-radius: 999px;
   padding: 1px 8px;
   font-size: 11px;
@@ -857,7 +907,7 @@ input {
 .chat-message img { width: 26px; height: 26px; border-radius: 50%; flex: 0 0 auto; margin-top: 1px; }
 .chat-message .chat-name { color: var(--tb-text-dim); font-weight: 700; margin-right: 6px; }
 .chat-message .chat-name::after { content: " :"; }
-.chat-message.own .chat-name { color: var(--tb-primary); }
+.chat-message.own .chat-name { color: var(--tb-accent-ink); }
 
 .chat-footer {
   padding: 8px 12px 12px;
@@ -893,15 +943,14 @@ input {
 .chat-input::placeholder { color: var(--tb-text-dim); }
 
 .chat-send {
+  position: relative;
   width: 36px;
   height: 36px;
   border-radius: 50%;
   flex: 0 0 auto;
   background-color: var(--tb-icon-btn-bg);
-  background-image: url("../assets/svg/icon-send.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 16px 16px;
+  --glyph: url("../assets/svg/icon-send.svg");
+  --glyph-size: 16px;
 }
 .chat-send:hover { background-color: var(--tb-icon-btn-bg-hover); }
 
@@ -966,7 +1015,7 @@ input {
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--tb-switch-knob);
   transition: left .15s ease;
 }
 .switch.on { background: var(--tb-primary); }
@@ -1014,20 +1063,19 @@ input {
 }
 
 .stepper button {
+  position: relative;
   width: 30px;
   height: 30px;
   border-radius: 50%;
   flex: 0 0 auto;
   background-color: var(--tb-stepper-btn-bg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 12px 12px;
+  --glyph-size: 12px;
   transition: background-color .12s ease, opacity .12s ease;
 }
 .stepper button:hover { background-color: var(--tb-icon-btn-bg-hover); }
 .stepper button[aria-disabled="true"] { opacity: .3; }
-.stepper .minus-btn { background-image: url("../assets/svg/icon-minus.svg"); }
-.stepper .plus-btn { background-image: url("../assets/svg/icon-plus.svg"); }
+.stepper .minus-btn { --glyph: url("../assets/svg/icon-minus.svg"); }
+.stepper .plus-btn { --glyph: url("../assets/svg/icon-plus.svg"); }
 
 .stepper .value-input {
   flex: 1;
@@ -1121,7 +1169,7 @@ input {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(4, 2, 14, .6);
+  background: var(--tb-dialog-scrim);
   backdrop-filter: blur(3px);
 }
 

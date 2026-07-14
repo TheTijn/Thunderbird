@@ -65,17 +65,11 @@ export function drawCurve(ctx, points, theme, w, h) {
   ctx.stroke(); // second pass strengthens the glow
   ctx.restore();
 
-  // faint vertical drop line from the head to the baseline
+  // faint baseline
   ctx.save();
-  ctx.globalAlpha = 0.4;
+  ctx.globalAlpha = 0.25;
   ctx.strokeStyle = theme.curve;
   ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(head.x, head.y);
-  ctx.lineTo(head.x, plot.bottom);
-  ctx.stroke();
-  // baseline
-  ctx.globalAlpha = 0.25;
   ctx.beginPath();
   ctx.moveTo(plot.left, plot.bottom);
   ctx.lineTo(plot.right, plot.bottom);

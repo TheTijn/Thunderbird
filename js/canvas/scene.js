@@ -31,6 +31,7 @@ class Scene {
     this.crashHead = null;
     this.bgTime = 0;
     this.lastFrame = 0;
+    this.calm = false; // reduce-distractions mode (set via bus 'calm:change')
   }
 
   async init(canvas, viewer) {
@@ -49,6 +50,12 @@ class Scene {
     };
     fit();
     new ResizeObserver(fit).observe(viewer);
+
+    // Re-read scene colors (curve, dial, sky, day flag) when the theme swaps.
+    bus.on('theme:change', () => { this.theme = readSceneTheme(); });
+
+    // Reduce-distractions toggle: freeze scenery scroll + hide the dial.
+    bus.on('calm:change', (on) => { this.calm = on; });
 
     bus.on('OnNewGameOpenBetting', () => {
       this.particles.clear();
@@ -106,7 +113,7 @@ class Scene {
       this.renderFlight(now, dt, w, h);
     } else if (this.mode === 'betting' || this.mode === 'locked') {
       // scenery behind the DOM waiting overlay
-      drawBackground(ctx, coverView(w, h), w, h, this.bgTime);
+      drawBackground(ctx, coverView(w, h), w, h, this.bgTime, this.theme, this.calm);
     }
     // loading: DOM loading screen covers the canvas
   }
@@ -140,8 +147,10 @@ class Scene {
       ? Math.min(multiplierAtTime(elapsed), gameServer.crashPoint)
       : multiplierAtTime(elapsed);
 
-    drawBackground(ctx, view, w, h, this.bgTime);
-    drawDial(ctx, w, h, this.theme, fadeIn, mult);
+    // the dial draws as a mid-layer inside drawBackground so the tree line
+    // occludes it (behind the treeline); skipped entirely in calm mode
+    drawBackground(ctx, view, w, h, this.bgTime, this.theme, this.calm,
+      this.calm ? null : () => drawDial(ctx, w, h, this.theme, fadeIn, mult));
 
     const points = computeCurvePoints(elapsed, w, h);
     drawCurve(ctx, points, this.theme, w, h);

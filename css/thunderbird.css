@@ -10,10 +10,12 @@
 
 :root {
   /* ---- Core palette ---- */
-  --tb-primary: #c6f31d;                 /* neon yellow-green */
+  --tb-primary: #c6f31d;                 /* neon yellow-green (brand fills/glows) */
   --tb-primary-strong: #dfff5e;
   --tb-primary-dim: rgba(198, 243, 29, .38);
   --tb-on-primary: #142000;
+  --tb-accent-ink: var(--tb-primary);    /* green safe as text/lines on the surface
+                                            (neon on dark; deepened in light mode) */
   --tb-green-deep: #7fb800;
   --tb-teal: #2ec4b6;                    /* cool complementary accent */
   --tb-amber: #f0a626;                   /* warm accent (beak orange) */
@@ -24,6 +26,13 @@
 
   --tb-text: #ffffff;
   --tb-text-dim: rgba(228, 240, 209, .55);   /* soft-green tinted secondary text */
+  --tb-logo-text: #ffffff;
+  --tb-icon-glyph: #e9f4d6;                   /* header/control glyph color */
+  --tb-card-shadow: 0 12px 32px rgba(0, 0, 0, .5);
+  --tb-viewer-inset: rgba(198, 243, 29, .12); /* viewer 1px inner ring */
+  --tb-dialog-scrim: rgba(4, 2, 14, .6);
+  --tb-chip-text: #ffffff;
+  --tb-switch-knob: #ffffff;
 
   /* ---- Page & panels: deep black-green arena with neon glow pools ---- */
   --tb-page-grad:
@@ -75,6 +84,16 @@
   --tb-badge-bg-result: #14494f;         /* deep teal badge on the red wash */
   --tb-toast-bg: rgba(8, 16, 6, .88);
 
+  /* ---- Win toast (neon card on dark; light card in day mode) ---- */
+  --tb-toast-card-bg: rgba(5, 10, 3, .93);
+  --tb-toast-radial: rgba(198, 243, 29, .20);   /* top highlight wash */
+  --tb-toast-border: var(--tb-primary);
+  --tb-toast-glow: rgba(198, 243, 29, .40);
+  --tb-toast-rays: rgba(198, 243, 29, .14);
+  --tb-toast-amount: var(--tb-primary);
+  --tb-toast-amount-glow: rgba(198, 243, 29, .6);
+  --tb-toast-mult-text: #ffffff;
+
   /* ---- Toggles / controls ---- */
   --tb-toggle-bg: rgba(2, 4, 1, .72);
   --tb-toggle-active-bg: var(--tb-primary);
@@ -95,6 +114,9 @@
   --tb-btn-cashout-shadow: rgba(255, 178, 40, .45);
 
   /* ---- Canvas scene colors (read by JS via getComputedStyle) ---- */
+  /* --tb-scene-day: 0 draws the dark storm background.png; 1 (light mode)
+     draws the daytime backdrop art (background-day.png). */
+  --tb-scene-day: 0;
   --tb-scene-curve: #c6f31d;
   --tb-scene-curve-fill-top: rgba(198, 243, 29, .55);
   --tb-scene-curve-fill-bottom: rgba(198, 243, 29, .06);
@@ -103,6 +125,131 @@
   --tb-scene-silhouette-window: rgba(198, 243, 29, .35);
   --tb-scene-dial: rgba(198, 243, 29, .28);
   --tb-scene-dial-text: rgba(198, 243, 29, .55);
+  --tb-scene-result-wash: #8f1d1d;
+  --tb-scene-result-ripple: rgba(255, 90, 70, .10);
+}
+
+/* ==========================================================================
+   LIGHT MODE — daytime look. Overrides the same tokens; structural CSS in
+   main.css is untouched. Green stays the accent, deepened where it must read
+   as text/lines on light surfaces (--tb-accent-ink, curve, dial). Panels
+   become light cards with soft grey shadows instead of neon glow, and the
+   canvas paints a bright blue, green-tinged sky (--tb-scene-day: 1).
+   ========================================================================== */
+:root[data-theme="light"] {
+  /* ---- Core palette ---- */
+  --tb-primary: #c6f31d;                 /* neon kept for saturated fills/glows */
+  --tb-primary-strong: #b6e400;
+  --tb-primary-dim: rgba(90, 150, 0, .30);
+  --tb-on-primary: #14260a;
+  --tb-accent-ink: #3a7500;              /* deep green — text/lines on light (WCAG AA) */
+  --tb-green-deep: #5a9e00;
+  --tb-teal: #17998c;
+  --tb-amber: #cf8410;
+
+  --tb-red: #c0392b;
+  --tb-red-deep: #922b21;
+  --tb-red-text: #c0392b;
+
+  --tb-text: #18240d;
+  --tb-text-dim: rgba(34, 50, 18, .74);
+  --tb-logo-text: #1c2b12;
+  --tb-icon-glyph: #2c3d1c;
+  --tb-card-shadow: 0 10px 26px rgba(40, 70, 20, .14);
+  --tb-viewer-inset: rgba(60, 110, 20, .16);
+  --tb-dialog-scrim: rgba(28, 46, 16, .34);
+  --tb-chip-text: #ffffff;
+  --tb-switch-knob: #ffffff;
+
+  /* ---- Page & panels: bright daytime sky with a soft green glow pool ---- */
+  --tb-page-grad:
+    radial-gradient(1000px 460px at 50% -120px, rgba(120, 200, 40, .20), transparent 60%),
+    radial-gradient(1200px 700px at 50% 122%, rgba(46, 196, 182, .14), transparent 60%),
+    linear-gradient(180deg, #d6ecfb 0%, #e7f3ec 52%, #eef7e0 100%);
+  --tb-panel-bg: linear-gradient(180deg, rgba(255, 255, 255, .94) 0%, rgba(245, 251, 238, .96) 100%);
+  --tb-panel-border: rgba(60, 110, 20, .20);
+  --tb-panel-shadow: 0 8px 24px rgba(40, 70, 20, .10), inset 0 1px 0 rgba(255, 255, 255, .7);
+  --tb-popover-bg: #ffffff;
+  --tb-row-bg: rgba(70, 130, 20, .07);
+  --tb-row-win-bg: rgba(120, 200, 40, .20);
+  --tb-scrollbar: rgba(90, 150, 0, .45);
+  --tb-input-bg: rgba(255, 255, 255, .82);
+
+  /* ---- Header ---- */
+  --tb-icon-btn-bg: rgba(60, 110, 20, .10);
+  --tb-icon-btn-bg-hover: rgba(60, 110, 20, .20);
+  --tb-help-bg: rgba(120, 200, 40, .26);
+  --tb-balance: var(--tb-accent-ink);
+  --tb-avatar-bg: #e6f2d8;
+  --tb-avatar-ring: rgba(90, 150, 0, .55);
+  --tb-history-bg: rgba(255, 255, 255, .68);
+  --tb-history-btn-bg: rgba(60, 110, 20, .10);
+
+  /* ---- History chip ranges (darkened for white-text WCAG AA on light) ---- */
+  --tb-chip-1: #5f7a6c;                  /* muted sage */
+  --tb-chip-2: #0b8577;                  /* teal */
+  --tb-chip-3: #2a7d17;                  /* green */
+  --tb-chip-4: #aad400;                  /* bright, dark text */
+  --tb-chip-4-text: #14260a;
+
+  /* ---- Viewer states (canvas paints over the idle/live area) ---- */
+  --tb-loading-grad:
+    radial-gradient(58% 66% at 50% 30%, rgba(198, 243, 29, .13), transparent 66%),
+    linear-gradient(180deg, #081505 0%, #0f2b0c 50%, #0d4530 100%);
+  --tb-viewer-idle-grad:
+    radial-gradient(58% 66% at 50% 30%, rgba(120, 200, 40, .16), transparent 66%),
+    linear-gradient(180deg, #bfe0f5 0%, #cfeae0 55%, #dff0cf 100%);
+  --tb-viewer-live: #cbe6f3;
+  --tb-viewer-result: #e79a94;
+  --tb-waiting-text: #1a2b0e;
+
+  /* ---- Multiplier badge (frosted light card, dark text) ---- */
+  --tb-badge-bg: rgba(255, 255, 255, .84);
+  --tb-badge-border: rgba(60, 110, 20, .32);
+  --tb-badge-glow: rgba(120, 200, 40, .22);
+  --tb-badge-glow-crash: rgba(120, 200, 40, .50);
+  --tb-badge-bg-result: #e8f2da;
+  --tb-toast-bg: rgba(255, 255, 255, .92);
+
+  /* ---- Win toast (light card, deep-green accents) ---- */
+  --tb-toast-card-bg: rgba(255, 255, 255, .95);
+  --tb-toast-radial: rgba(120, 200, 40, .18);
+  --tb-toast-border: #6bbf00;
+  --tb-toast-glow: rgba(90, 160, 0, .28);
+  --tb-toast-rays: rgba(90, 160, 0, .12);
+  --tb-toast-amount: #3f8c00;
+  --tb-toast-amount-glow: rgba(90, 160, 0, .35);
+  --tb-toast-mult-text: #18240d;
+
+  /* ---- Toggles / controls ---- */
+  --tb-toggle-bg: rgba(60, 110, 20, .10);
+  --tb-toggle-active-bg: var(--tb-primary);
+  --tb-toggle-active-text: var(--tb-on-primary);
+  --tb-switch-bg: rgba(40, 60, 20, .24);
+  --tb-stepper-btn-bg: rgba(60, 110, 20, .12);
+  --tb-denom-bg: rgba(70, 130, 20, .10);
+  --tb-denom-bg-hover: rgba(70, 130, 20, .20);
+
+  /* ---- Bet button states (saturated — read on light) ---- */
+  --tb-btn-bet-grad: linear-gradient(180deg, #8fd831 0%, #4aa60f 52%, #2f8f06 100%);
+  --tb-btn-bet-border: rgba(255, 255, 255, .40);
+  --tb-btn-bet-shadow: rgba(70, 170, 20, .40);
+  --tb-btn-cancel-grad: linear-gradient(180deg, #d9584c 0%, #a52b22 100%);
+  --tb-btn-cancel-border: rgba(255, 255, 255, .30);
+  --tb-btn-cashout-grad: linear-gradient(180deg, #ffc14d 0%, #e08a00 100%);
+  --tb-btn-cashout-border: rgba(255, 255, 255, .40);
+  --tb-btn-cashout-shadow: rgba(230, 150, 0, .40);
+
+  /* ---- Canvas scene — daytime backdrop art + deepened curve/dial for light ---- */
+  --tb-scene-day: 1;
+  --tb-scene-curve: #3f8c00;
+  --tb-scene-curve-fill-top: rgba(90, 160, 0, .42);
+  --tb-scene-curve-fill-bottom: rgba(90, 160, 0, .05);
+  --tb-scene-ripple: rgba(90, 150, 0, .05);
+  --tb-scene-silhouette: #0d1406;
+  --tb-scene-silhouette-window: rgba(90, 150, 0, .35);
+  --tb-scene-dial: rgba(40, 80, 10, .34);
+  --tb-scene-dial-text: rgba(28, 60, 6, .60);
   --tb-scene-result-wash: #8f1d1d;
   --tb-scene-result-ripple: rgba(255, 90, 70, .10);
 }

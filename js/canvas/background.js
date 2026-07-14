@@ -29,7 +29,7 @@ function cloudScroll(slotName, time) {
   return layer[1] + layer[2] * time;
 }
 
-function drawFlicker(ctx, view, f, time) {
+function drawFlicker(ctx, view, f, time, scroll = time) {
   if (time >= f.nextAt) {
     // schedule a burst of 2-3 blinks, ~66ms on / ~66ms off
     const count = 2 + (Math.random() < 0.4 ? 1 : 0);
@@ -44,27 +44,40 @@ function drawFlicker(ctx, view, f, time) {
   const on = f.blinks.some(([a, b]) => time >= a && time < b);
   if (!on) return;
   // tile in lock-step with the parent cloud so the flicker stays on its puff
-  drawSlotWrapped(ctx, view, f.slot, cloudScroll(f.cloud, time), slotContentBox(f.cloud));
+  // (blink timing follows real time; position follows the — possibly frozen — scroll)
+  drawSlotWrapped(ctx, view, f.slot, cloudScroll(f.cloud, scroll), slotContentBox(f.cloud));
 }
 
 // Full backdrop: everything behind the curve and the bird.
-export function drawBackground(ctx, view, w, h, time) {
-  // gradient backdrop (cover)
-  drawSlot(ctx, view, 'background');
+// `calm` freezes the drifting scenery: the tree lines and cloud strips stop
+// scrolling (held at their start offset); lightning still flickers in place.
+// `drawMid` (optional) renders between the city skyline and the tree lines —
+// used for the multiplier dial so the tree line occludes it.
+export function drawBackground(ctx, view, w, h, time, theme, calm = false, drawMid = null) {
+  const scroll = calm ? 0 : time;
+  const day = !!(theme && theme.isDay);
 
-  // city skyline glow sits behind the tree lines
-  drawSlot(ctx, view, 'city_skyline');
+  // full-cover backdrop — dark storm PNG, or the daytime backdrop in light mode
+  drawSlot(ctx, view, 'background', day ? { image: 'background-day' } : {});
 
-  // tree lines
-  drawSlotWrapped(ctx, view, 'tree_line_back', TREE_BACK.start + TREE_BACK.speed * time);
-  drawSlotWrapped(ctx, view, 'tree_line_front', TREE_FRONT.start + TREE_FRONT.speed * time);
+  // city skyline glow sits behind the tree lines (daytime recolour in light mode)
+  drawSlot(ctx, view, 'city_skyline', day ? { image: 'city_skyline-day' } : {});
+
+  // mid layer (multiplier dial) — behind the tree lines
+  if (drawMid) drawMid();
+
+  // tree lines (daytime recolours in light mode)
+  drawSlotWrapped(ctx, view, 'tree_line_back', TREE_BACK.start + TREE_BACK.speed * scroll,
+    null, day ? 'tree_line_back-day' : null);
+  drawSlotWrapped(ctx, view, 'tree_line_front', TREE_FRONT.start + TREE_FRONT.speed * scroll,
+    null, day ? 'tree_line_front-day' : null);
 
   // cloud strips (draw order per the Spine skeleton: 2, 3, then 1 on top),
   // each followed by its own lightning flickers
   for (const [slot] of CLOUD_LAYERS) {
-    drawSlotWrapped(ctx, view, slot, cloudScroll(slot, time));
+    drawSlotWrapped(ctx, view, slot, cloudScroll(slot, scroll), null, day ? `${slot}-day` : null);
     for (const f of FLICKERS) {
-      if (f.cloud === slot) drawFlicker(ctx, view, f, time);
+      if (f.cloud === slot) drawFlicker(ctx, view, f, time, scroll);
     }
   }
 }

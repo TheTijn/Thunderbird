@@ -18,5 +18,7 @@ export function readSceneTheme() {
   Object.entries(KEYS).forEach(([key, cssVar]) => {
     theme[key] = style.getPropertyValue(cssVar).trim() || '#c6f31d';
   });
+  // Light mode draws the daytime backdrop art instead of the dark storm PNG.
+  theme.isDay = parseFloat(style.getPropertyValue('--tb-scene-day')) === 1;
   return theme;
 }
