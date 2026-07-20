@@ -9,7 +9,6 @@ import { ParticleSystem } from './particles.js';
 import {
   BIRD_SCALE,
   drawFlyingBird,
-  flyingBirdTailPoint,
   drawElectrocutedBird,
   drawLightningBolt,
 } from './bird.js';
@@ -141,8 +140,6 @@ class Scene {
     const birdScale = Math.min(view.s, w / 1920) * BIRD_SCALE;
     const birdWidth = 543 * birdScale;
 
-    // bird position + fresh trail sparks are computed first, but everything
-    // is drawn after the particles so the bird sits on top of its own trail.
     let bx = 0;
     let by = 0;
     if (!isCrash) {
@@ -151,12 +148,9 @@ class Scene {
       const ease = 1 - (1 - takeoffP) ** 3;
       bx = start.x + (head.x - start.x) * ease;
       by = start.y + (head.y - start.y) * ease;
-
-      const tail = flyingBirdTailPoint(bx, by, birdScale, elapsed, angle * 0.5);
-      this.particles.trail(tail.x, tail.y, angle, h / 450);
     }
 
-    // particles render behind the bird / crash actors
+    // particles (crash spark burst only) render behind the bird / crash actors
     this.particles.update(dt);
     this.particles.draw(ctx, this.theme.curve);
 
