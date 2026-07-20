@@ -10,20 +10,6 @@
   <link rel="stylesheet" href="css/main.css">
   <!-- Per-game theme stylesheet: swapped by id, same pattern as production (game-theme) -->
   <link rel="stylesheet" id="game-theme" href="css/thunderbird.css">
-  <!-- Apply the saved (or OS-preferred) theme before first paint to avoid a flash. -->
-  <script>
-    (function () {
-      try {
-        var t = localStorage.getItem('tb-theme');
-        if (t !== 'light' && t !== 'dark') {
-          t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-        }
-        document.documentElement.dataset.theme = t;
-      } catch (e) {
-        document.documentElement.dataset.theme = 'dark';
-      }
-    })();
-  </script>
 </head>
 
 <body>
@@ -57,7 +43,6 @@
           <div class="balance" id="balance-value">€0.00</div>
         </div>
         <img class="profile" id="player-avatar" src="assets/avatars/av1.svg" alt="Avatar">
-        <button class="icon-btn theme-btn" id="theme-btn" title="Toggle light / dark theme" aria-label="Toggle light or dark theme"></button>
         <button class="icon-btn help-btn" id="help-btn" title="How to play" aria-label="How to play"></button>
         <button class="icon-btn settings-btn" id="settings-btn" title="Settings" aria-label="Settings"></button>
         <button class="icon-btn mute-btn muted" id="mute-btn" title="Sound" aria-label="Sound"></button>

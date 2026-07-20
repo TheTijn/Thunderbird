@@ -7,17 +7,13 @@
 const IMG_DIR = 'assets/img';
 
 // Sprites the canvas draws (loading_screen* are used by the DOM instead).
+// The backdrop is a procedural starry sky (see background.js); only the
+// cloud strips and their lightning flickers survive from the scenery art.
 const CANVAS_SPRITES = [
-  'background', 'city_skyline', 'tree_line_back', 'tree_line_front',
-  // daytime recolours (light mode) — same dimensions as their base sprites,
-  // so they reuse the base slot/region geometry (drawn via the `image` option)
-  'background-day', 'city_skyline-day', 'tree_line_back-day', 'tree_line_front-day',
-  'top_cloud1-day', 'top_cloud2-day', 'top_cloud3-day',
   'top_cloud1', 'top_cloud2', 'top_cloud3',
   'top_cloud1_lightning1', 'top_cloud1_lightning2',
   'top_cloud2_lightning1', 'top_cloud2_lightning2',
-  'bird_electrocuted', 'bird_static', 'bird_dead', 'bird_steam',
-  'bird_lightning_bolt', 'bird_endscreen',
+  'bird_electrocuted', 'bird_static', 'bird_lightning_bolt',
 ];
 
 export const art = {
@@ -58,32 +54,6 @@ export function coverView(w, h) {
   return { s, x: (w - 1920 * s) / 2, y: (h - 1080 * s) / 2 };
 }
 
-// Draws a slot's sprite at its design-space position (non-rotated slots).
-// dx/dy are design-space offsets (canvas orientation: +y is down).
-export function drawSlot(ctx, view, slotName, { dx = 0, dy = 0, alpha = 1, scaleX = 1, image = null } = {}) {
-  const slot = art.manifest.slots[slotName];
-  const region = art.manifest.regions[slot.attachment];
-  // `image` swaps the drawn bitmap (e.g. a daytime recolour) while keeping the
-  // base slot's placement/region geometry — variants must match its dimensions.
-  const img = art.images[image || slot.attachment];
-  if (!img) return;
-  const sw = slot.sx * scaleX;
-  const left = slot.cx - (region.ow / 2 - region.ox) * sw + dx;
-  const top = slot.cy - (region.oh / 2 - region.oy) * slot.sy + dy;
-  if (alpha < 1) {
-    ctx.save();
-    ctx.globalAlpha = alpha;
-  }
-  ctx.drawImage(
-    img,
-    view.x + left * view.s,
-    view.y + top * view.s,
-    region.w * sw * view.s,
-    region.h * slot.sy * view.s,
-  );
-  if (alpha < 1) ctx.restore();
-}
-
 // Content box (design space) of a slot's sprite — used to anchor sprites
 // that must tile in lock-step with another strip (cloud lightning).
 export function slotContentBox(slotName) {
@@ -92,16 +62,15 @@ export function slotContentBox(slotName) {
   return { left: slot.cx - region.ow / 2 + region.ox, width: region.w };
 }
 
-// Draws a slot tiled horizontally (scrolling clouds / tree lines). The strips
-// are not authored to loop, so alternate tiles are mirrored — every edge then
+// Draws a slot tiled horizontally (scrolling cloud strips). The strips are
+// not authored to loop, so alternate tiles are mirrored — every edge then
 // meets its own reflection and the wrap never shows a seam.
 // `anchor` ({left, width} in design px) overrides the tiling box, letting the
 // cloud lightning tile in lock-step with its parent cloud strip.
-export function drawSlotWrapped(ctx, view, slotName, scrollX, anchor = null, image = null) {
+export function drawSlotWrapped(ctx, view, slotName, scrollX, anchor = null) {
   const slot = art.manifest.slots[slotName];
   const region = art.manifest.regions[slot.attachment];
-  // `image` swaps the drawn bitmap (daytime recolour) using the base geometry.
-  const img = art.images[image || slot.attachment];
+  const img = art.images[slot.attachment];
   if (!img) return;
   const content = slotContentBox(slotName);
   const box = anchor ?? content;
@@ -129,3 +98,4 @@ export function drawSlotWrapped(ctx, view, slotName, scrollX, anchor = null, ima
     }
   }
 }
+

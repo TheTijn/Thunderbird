@@ -2,11 +2,11 @@ import { bus } from '../core/bus.js';
 
 // In-viewer controls overlaid on the game canvas.
 //
-// Calm toggle ("reduce motion & distractions"): freezes the scrolling tree
-// lines and cloud strips and hides the multiplier dial. The scene owns the
+// Calm toggle ("reduce motion & distractions"): holds the starry sky at a
+// steady brightness instead of twinkling. The scene owns the
 // rendering; this just tracks the preference and emits `calm:change`. Default
 // follows the OS `prefers-reduced-motion` until the user makes a choice, which
-// is then remembered in localStorage — same pattern as the theme toggle.
+// is then remembered in localStorage.
 const CALM_KEY = 'tb-calm';
 
 function readCalmPref() {

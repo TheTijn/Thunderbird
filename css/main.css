@@ -231,8 +231,6 @@ input {
 .settings-btn { --glyph: url("../assets/svg/icon-settings.svg"); }
 .mute-btn     { --glyph: url("../assets/svg/icon-sound-on.svg"); }
 .mute-btn.muted { --glyph: url("../assets/svg/icon-sound-off.svg"); }
-.theme-btn    { --glyph: url("../assets/svg/icon-sun.svg"); }
-:root[data-theme="light"] .theme-btn { --glyph: url("../assets/svg/icon-moon.svg"); }
 
 .header-right {
   display: flex;
@@ -397,8 +395,8 @@ input {
 
 .viewer[data-state="live"],
 .viewer[data-state="takeoff"] { background: var(--tb-viewer-live); }
-.viewer[data-state="crash"]   { background: var(--tb-viewer-live); }
-.viewer[data-state="result"]  { background: var(--tb-viewer-result); }
+.viewer[data-state="crash"],
+.viewer[data-state="result"]  { background: var(--tb-viewer-live); }
 
 #game-canvas {
   position: absolute;

@@ -1,10 +1,33 @@
-// Layered scenery from the final art: gradient backdrop, glowing city
-// skyline, two scrolling tree lines and three scrolling cloud strips with
-// occasional lightning flickers inside the clouds.
+// Starry-sky backdrop with subtle storm clouds: a vertical night gradient,
+// a deterministic field of gently twinkling stars, and the three scrolling
+// cloud strips from the final art drawn at low opacity, with occasional
+// lightning flickers inside them.
 //
-// Scroll speeds are taken from the Spine `bird_background` animation
-// (design-space px over its 4s duration); the strips wrap at their own width.
-import { drawSlot, drawSlotWrapped, slotContentBox } from './assets.js';
+// Stars and clouds live in the 1920x1080 design space so the composition
+// holds under the cover fit. Cloud scroll speeds are taken from the Spine
+// `bird_background` animation (design-space px over its 4s duration).
+import { drawSlotWrapped, slotContentBox } from './assets.js';
+
+const STAR_COUNT = 170;
+
+// deterministic per-star hash -> [0, 1) so the field is stable across frames
+function rand(i, salt) {
+  const x = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453;
+  return x - Math.floor(x);
+}
+
+const STARS = Array.from({ length: STAR_COUNT }, (_, i) => ({
+  x: rand(i, 1) * 1920,
+  y: rand(i, 2) * 1080,
+  // squared so most stars stay tiny with a handful of bright ones
+  r: 1.0 + rand(i, 3) ** 2 * 2.4,
+  base: 0.3 + rand(i, 4) * 0.55,
+  speed: 0.4 + rand(i, 5) * 1.3,
+  phase: rand(i, 6) * Math.PI * 2,
+}));
+
+// top / middle / bottom gradient stops
+const NIGHT_SKY = ['#03050e', '#0a1026', '#161d3f'];
 
 // [slot, startX, px/s] — from the bird_background bone translate timelines.
 const CLOUD_LAYERS = [
@@ -12,8 +35,8 @@ const CLOUD_LAYERS = [
   ['top_cloud3', -1826.33, -25.9],
   ['top_cloud1', -27.72, -49.28],
 ];
-const TREE_BACK = { start: 0, speed: -50.15 };
-const TREE_FRONT = { start: 0, speed: -221.62 };
+const CLOUD_ALPHA = 0.4;
+const FLICKER_ALPHA = 0.3;
 
 // Lightning flickers live inside a cloud strip and scroll with it.
 // Blink pattern mirrors the Spine timelines: short double/triple blinks.
@@ -49,35 +72,45 @@ function drawFlicker(ctx, view, f, time, scroll = time) {
 }
 
 // Full backdrop: everything behind the curve and the bird.
-// `calm` freezes the drifting scenery: the tree lines and cloud strips stop
-// scrolling (held at their start offset); lightning still flickers in place.
-// `drawMid` (optional) renders between the city skyline and the tree lines —
-// used for the multiplier dial so the tree line occludes it.
-export function drawBackground(ctx, view, w, h, time, theme, calm = false, drawMid = null) {
+// `calm` (reduce-distractions) freezes the cloud scroll and holds the stars
+// at a steady brightness instead of twinkling.
+export function drawBackground(ctx, view, w, h, time, calm = false) {
   const scroll = calm ? 0 : time;
-  const day = !!(theme && theme.isDay);
 
-  // full-cover backdrop — dark storm PNG, or the daytime backdrop in light mode
-  drawSlot(ctx, view, 'background', day ? { image: 'background-day' } : {});
+  const sky = ctx.createLinearGradient(0, 0, 0, h);
+  sky.addColorStop(0, NIGHT_SKY[0]);
+  sky.addColorStop(0.55, NIGHT_SKY[1]);
+  sky.addColorStop(1, NIGHT_SKY[2]);
+  ctx.fillStyle = sky;
+  ctx.fillRect(0, 0, w, h);
 
-  // city skyline glow sits behind the tree lines (daytime recolour in light mode)
-  drawSlot(ctx, view, 'city_skyline', day ? { image: 'city_skyline-day' } : {});
+  ctx.save();
+  ctx.fillStyle = '#ffffff';
+  for (const s of STARS) {
+    const twinkle = calm ? 0.8 : 0.6 + 0.4 * Math.sin(time * s.speed + s.phase);
+    ctx.globalAlpha = Math.min(1, s.base * twinkle);
+    const x = view.x + s.x * view.s;
+    const y = view.y + s.y * view.s;
+    const r = Math.max(0.5, s.r * view.s);
+    // soft halo on the brightest stars only — keeps the pass cheap
+    ctx.shadowBlur = s.r > 2.6 ? r * 4 : 0;
+    ctx.shadowColor = '#cfe0ff';
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
 
-  // mid layer (multiplier dial) — behind the tree lines
-  if (drawMid) drawMid();
-
-  // tree lines (daytime recolours in light mode)
-  drawSlotWrapped(ctx, view, 'tree_line_back', TREE_BACK.start + TREE_BACK.speed * scroll,
-    null, day ? 'tree_line_back-day' : null);
-  drawSlotWrapped(ctx, view, 'tree_line_front', TREE_FRONT.start + TREE_FRONT.speed * scroll,
-    null, day ? 'tree_line_front-day' : null);
-
-  // cloud strips (draw order per the Spine skeleton: 2, 3, then 1 on top),
-  // each followed by its own lightning flickers
+  // subtle storm clouds over the stars (draw order per the Spine skeleton:
+  // 2, 3, then 1 on top), each followed by its own lightning flickers
+  ctx.save();
   for (const [slot] of CLOUD_LAYERS) {
-    drawSlotWrapped(ctx, view, slot, cloudScroll(slot, scroll), null, day ? `${slot}-day` : null);
+    ctx.globalAlpha = CLOUD_ALPHA;
+    drawSlotWrapped(ctx, view, slot, cloudScroll(slot, scroll));
+    ctx.globalAlpha = FLICKER_ALPHA;
     for (const f of FLICKERS) {
       if (f.cloud === slot) drawFlicker(ctx, view, f, time, scroll);
     }
   }
+  ctx.restore();
 }
