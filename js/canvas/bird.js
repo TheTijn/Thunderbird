@@ -24,20 +24,6 @@ function flapBob(cycle) {
     : lerp(13.95, 0, (cycle - 0.4333) / (FLAP_CYCLE - 0.4333));
 }
 
-// Base of the tail feathers in authored frame coords, relative to the bird
-// anchor — where the particle trail emanates from. Follows the bob and tilt
-// so the trail stays glued to the bird.
-export function flyingBirdTailPoint(x, y, sc, t, angle = 0) {
-  const off = { x: -150 * sc, y: 80 * sc };
-  const bob = flapBob(t % FLAP_CYCLE) * sc;
-  const cos = Math.cos(angle);
-  const sin = Math.sin(angle);
-  return {
-    x: x + off.x * cos - off.y * sin,
-    y: y - bob + off.x * sin + off.y * cos,
-  };
-}
-
 // (x, y) is the bird anchor (centre of the authored 885 box) in canvas px;
 // sc is canvas px per authored design unit (view.s * BIRD_SCALE).
 export function drawFlyingBird(ctx, x, y, sc, t, angle = 0) {
