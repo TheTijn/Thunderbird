@@ -1,7 +1,7 @@
 // Bird states from the final art. The 9 flight frames are pre-composited by
 // scripts/extract-atlas.mjs; timings below mirror the Spine animations
-// (bird_flying, bird_electrocuted, bird_lightning_bolt, bird_endscreen).
-import { art, drawSlot } from './assets.js';
+// (bird_flying, bird_electrocuted, bird_lightning_bolt).
+import { art } from './assets.js';
 
 // bird_flying attachment keys: frame i is visible from FLAP_KEYS[i] to
 // FLAP_KEYS[i+1]; the cycle loops at 0.6s.
@@ -131,25 +131,4 @@ export function drawLightningBolt(ctx, x, y, vs, t) {
     r.h * sy * vs,
   );
   ctx.restore();
-}
-
-// ----------------------------------------------------------------- endscreen
-// bird_endscreen: red backdrop, roast chicken drops in and squashes, steam
-// rises from behind it. t is seconds since the result frame appeared.
-export function drawEndscreen(ctx, view, t) {
-  drawSlot(ctx, view, 'bird_endscreen');
-
-  // steam (drawn behind the chicken)
-  if (t >= 0.4333) {
-    const rise = lerp(272, 9.89, (t - 0.4333) / 1);
-    drawSlot(ctx, view, 'bird_steam', { dy: rise });
-  }
-
-  // chicken drop with a small bounce + squash on impact
-  let drop;
-  if (t < 0.2667) drop = lerp(0, 1020.17, t / 0.2667);
-  else if (t < 0.3667) drop = lerp(1020.17, 1005.71, (t - 0.2667) / 0.1);
-  else drop = lerp(1005.71, 1020.17, (t - 0.3667) / 0.2);
-  const squash = t >= 0.2667 && t < 0.4667 ? lerp(0.9457, 1, (t - 0.2667) / 0.2) : 1;
-  drawSlot(ctx, view, 'bird_dead', { dy: drop, scaleX: squash });
 }

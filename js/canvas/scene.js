@@ -1,12 +1,10 @@
 import { CONFIG } from '../config.js';
 import { bus } from '../core/bus.js';
 import { gameServer } from '../sim/gameServer.js';
-import { multiplierAtTime } from '../sim/rng.js';
 import { readSceneTheme } from './theme.js';
 import { loadArt, coverView } from './assets.js';
 import { drawBackground } from './background.js';
 import { computeCurvePoints, drawCurve, headAngle, plotArea } from './curve.js';
-import { drawDial } from './dial.js';
 import { ParticleSystem } from './particles.js';
 import {
   BIRD_SCALE,
@@ -14,10 +12,9 @@ import {
   flyingBirdTailPoint,
   drawElectrocutedBird,
   drawLightningBolt,
-  drawEndscreen,
 } from './bird.js';
 
-// Canvas scene — renders the six visual states of the round on a single
+// Canvas scene — renders the visual states of the round on a single
 // 2D canvas sitting inside the .viewer. The DOM handles the waiting text,
 // multiplier badge and toasts; the canvas handles the world.
 class Scene {
@@ -26,7 +23,6 @@ class Scene {
     this.particles = new ParticleSystem();
     this.launchAt = 0;
     this.crashAt = 0;
-    this.resultAt = 0;
     this.crashElapsed = 0;
     this.crashHead = null;
     this.bgTime = 0;
@@ -51,10 +47,8 @@ class Scene {
     fit();
     new ResizeObserver(fit).observe(viewer);
 
-    // Re-read scene colors (curve, dial, sky, day flag) when the theme swaps.
-    bus.on('theme:change', () => { this.theme = readSceneTheme(); });
-
-    // Reduce-distractions toggle: freeze scenery scroll + hide the dial.
+    // Reduce-distractions toggle: freeze the cloud scroll and hold the
+    // stars at a steady brightness.
     bus.on('calm:change', (on) => { this.calm = on; });
 
     bus.on('OnNewGameOpenBetting', () => {
@@ -76,10 +70,7 @@ class Scene {
       this.crashHead = pts[pts.length - 1];
       this.particles.burst(this.crashHead.x, this.crashHead.y, 60, h / 450);
     });
-    bus.on('OnRoundCompleted', () => {
-      this.resultAt = performance.now();
-      this.setMode('result');
-    });
+    bus.on('OnRoundCompleted', () => this.setMode('result'));
 
     requestAnimationFrame((t) => this.frame(t));
   }
@@ -103,17 +94,15 @@ class Scene {
   render(now, dt) {
     const { ctx } = this;
     const { w, h } = this.size();
-    this.bgTime += dt; // scenery keeps drifting in every state
+    this.bgTime += dt; // stars keep twinkling in every state
     ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
 
-    if (this.mode === 'result') {
-      this.renderResult(now, w, h);
-    } else if (this.mode === 'takeoff' || this.mode === 'live' || this.mode === 'crash') {
+    if (this.mode === 'takeoff' || this.mode === 'live' || this.mode === 'crash') {
       this.renderFlight(now, dt, w, h);
-    } else if (this.mode === 'betting' || this.mode === 'locked') {
-      // scenery behind the DOM waiting overlay
-      drawBackground(ctx, coverView(w, h), w, h, this.bgTime, this.theme, this.calm);
+    } else if (this.mode !== 'loading') {
+      // betting / locked / result: just the starry sky behind the DOM overlays
+      drawBackground(ctx, coverView(w, h), w, h, this.bgTime, this.calm);
     }
     // loading: DOM loading screen covers the canvas
   }
@@ -128,7 +117,6 @@ class Scene {
 
     const elapsed = isCrash ? this.crashElapsed : gameServer.elapsedSeconds();
     const takeoffP = Math.min(1, sinceLaunch / CONFIG.takeoffMs);
-    const fadeIn = isCrash ? 1 : takeoffP;
     const view = coverView(w, h);
 
     // crash shake
@@ -141,16 +129,7 @@ class Scene {
       }
     }
 
-    // live multiplier drives the dial rotation; during crash it holds at the
-    // crash point (elapsed is frozen at crashElapsed).
-    const mult = isCrash
-      ? Math.min(multiplierAtTime(elapsed), gameServer.crashPoint)
-      : multiplierAtTime(elapsed);
-
-    // the dial draws as a mid-layer inside drawBackground so the tree line
-    // occludes it (behind the treeline); skipped entirely in calm mode
-    drawBackground(ctx, view, w, h, this.bgTime, this.theme, this.calm,
-      this.calm ? null : () => drawDial(ctx, w, h, this.theme, fadeIn, mult));
+    drawBackground(ctx, view, w, h, this.bgTime, this.calm);
 
     const points = computeCurvePoints(elapsed, w, h);
     drawCurve(ctx, points, this.theme, w, h);
@@ -203,11 +182,6 @@ class Scene {
       ctx.fillRect(-20, -20, w + 40, h + 40);
       ctx.restore();
     }
-  }
-
-  renderResult(now, w, h) {
-    const view = coverView(w, h);
-    drawEndscreen(this.ctx, view, (now - this.resultAt) / 1000);
   }
 }
 
